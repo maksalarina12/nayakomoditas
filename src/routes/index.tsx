@@ -145,30 +145,35 @@ function DashboardPage() {
   return (
     <div className="min-h-screen bg-background transition-colors duration-300">
       <header className="border-b border-border bg-navy text-navy-foreground shadow-sm">
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-6 py-3">
-          <SipanganLogo compact />
+        <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
+          <SipanganLogo onDark />
 
-          <div className="flex items-center gap-3">
-            <ThemeToggle theme={themeMode} onToggle={handleToggleTheme} />
-            <div className="hidden items-center gap-4 text-[11px] md:flex">
-              <span className="inline-flex items-center gap-1.5 text-navy-foreground/80">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="hidden items-center gap-3 text-[11px] md:flex">
+              <span className="inline-flex items-center gap-1.5 text-navy-foreground/85">
                 <ShieldCheck className="h-3.5 w-3.5" /> Data Terverifikasi
               </span>
-              <span className="font-tabular text-navy-foreground/70">Snapshot {selectedDateLabel}</span>
+              <span className="font-tabular text-navy-foreground/75">
+                Snapshot {selectedDateLabel}
+              </span>
             </div>
+            <ThemeToggle theme={themeMode} onToggle={handleToggleTheme} onDark />
           </div>
         </div>
       </header>
 
       <div className="border-b border-border bg-card/95 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-6 py-4">
+        <div className="mx-auto flex max-w-[1400px] flex-col gap-4 px-4 py-4 sm:px-6 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
           <div>
             <p className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
               <Sparkles className="h-3.5 w-3.5 text-primary" /> Dashboard Eksekutif
             </p>
-            <h1 className="mt-1 text-2xl font-bold tracking-tight text-navy">
+            <h1 className="mt-1 text-xl font-bold tracking-tight text-navy sm:text-2xl">
               Pemantauan Harga Bahan Pokok
             </h1>
+            <p className="mt-1 font-tabular text-[11px] uppercase tracking-wider text-muted-foreground md:hidden">
+              Snapshot {selectedDateLabel}
+            </p>
           </div>
           <DashboardToolbar
             query={query}
@@ -185,10 +190,10 @@ function DashboardPage() {
         </div>
       </div>
 
-      <main className="mx-auto max-w-[1400px] space-y-6 px-6 py-6">
+      <main className="mx-auto max-w-[1400px] space-y-6 px-4 py-6 sm:px-6">
         <section className="dashboard-section">
           <SectionHeader label="Ringkasan Eksekutif" sub="4 Komoditas Utama Terpantau" />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
             {featured.map((item) => (
               <MetricCard
                 key={item.id}
