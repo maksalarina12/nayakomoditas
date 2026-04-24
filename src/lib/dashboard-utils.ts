@@ -1,53 +1,83 @@
 import { stapleItems, type StapleItem } from "./staple-data";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+const DASHBOARD_TIMEZONE = "Asia/Jakarta";
+
+type DateParts = {
+  year: number;
+  month: number;
+  day: number;
+};
+
+function getDatePartsInJakarta(date: Date): DateParts {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: DASHBOARD_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+
+  const year = Number(parts.find((part) => part.type === "year")?.value ?? "0");
+  const month = Number(parts.find((part) => part.type === "month")?.value ?? "0");
+  const day = Number(parts.find((part) => part.type === "day")?.value ?? "0");
+
+  return { year, month, day };
+}
+
+function createStableDate(parts: DateParts): Date {
+  // Simpan pada UTC siang hari agar tetap jatuh pada kalender yang sama saat
+  // dirender di browser/client dengan zona waktu berbeda.
+  return new Date(Date.UTC(parts.year, parts.month - 1, parts.day, 12, 0, 0));
+}
+
+function getDateKey(date: Date): string {
+  const { year, month, day } = getDatePartsInJakarta(date);
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
 
 /**
- * Generate the list of available snapshot dates (last 7 days, oldest first).
- * Uses a deterministic anchor so SSR and CSR render identically.
+ * Generate daftar snapshot 7 hari terakhir berdasarkan kalender Asia/Jakarta,
+ * supaya preview Lovable dan GitHub Pages menampilkan hari yang sama.
  */
 export function getAvailableSnapshotDates(): Date[] {
-  // Anchor on UTC midnight today to avoid hydration mismatch
-  const today = new Date();
-  const anchor = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+  const today = createStableDate(getDatePartsInJakarta(new Date()));
   const dates: Date[] = [];
+
   for (let i = 6; i >= 0; i--) {
-    dates.push(new Date(anchor.getTime() - i * DAY_MS));
+    dates.push(new Date(today.getTime() - i * DAY_MS));
   }
+
   return dates;
 }
 
 export function getSnapshotIndex(selected: Date, available: Date[]): number {
-  const target = startOfDay(selected).getTime();
-  const idx = available.findIndex((d) => startOfDay(d).getTime() === target);
+  const target = getDateKey(selected);
+  const idx = available.findIndex((date) => getDateKey(date) === target);
   return idx === -1 ? available.length - 1 : idx;
-}
-
-function startOfDay(d: Date): Date {
-  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
 }
 
 /**
  * Build a snapshot of items reflecting prices for a specific historical day.
- * Index 6 = today (uses live hargaHariIni / hargaKemarin).
- * Index < 6 shifts the lens backwards in the trend7d window.
+ * Index 6 = hari ini, index 5 = kemarin, dst.
  */
 export function buildSnapshotItems(items: StapleItem[], snapshotIdx: number): StapleItem[] {
-  if (snapshotIdx >= 6) return items;
+  const safeIndex = Math.min(Math.max(snapshotIdx, 0), 6);
+  if (safeIndex >= 6) return items;
 
   return items.map((item) => {
-    const today = item.trend7d[snapshotIdx];
-    const yesterday = item.trend7d[Math.max(0, snapshotIdx - 1)];
-    const window = item.trend7d.slice(0, snapshotIdx + 1);
-    // Pad to 7 entries by repeating the earliest known price
-    const padded = window.length < 7
-      ? [...Array(7 - window.length).fill(window[0]), ...window]
-      : window;
+    const today = item.trend7d[safeIndex];
+    const yesterday = item.trend7d[Math.max(0, safeIndex - 1)];
+    const visibleWindow = item.trend7d.slice(Math.max(0, safeIndex - 6), safeIndex + 1);
+    const paddedTrend =
+      visibleWindow.length < 7
+        ? [...Array(7 - visibleWindow.length).fill(visibleWindow[0]), ...visibleWindow]
+        : visibleWindow;
+
     return {
       ...item,
       hargaHariIni: today,
       hargaKemarin: yesterday,
-      trend7d: padded,
+      trend7d: paddedTrend,
     };
   });
 }
@@ -58,7 +88,7 @@ export function buildSnapshotItems(items: StapleItem[], snapshotIdx: number): St
 export function syncStapleItems(items: StapleItem[]): StapleItem[] {
   return items.map((item) => {
     const drift = (Math.random() - 0.45) * 0.025; // -1.1% to +1.4%
-    const newPrice = Math.max(500, Math.round(item.hargaHariIni * (1 + drift) / 50) * 50);
+    const newPrice = Math.max(500, Math.round((item.hargaHariIni * (1 + drift)) / 50) * 50);
     const newTrend = [...item.trend7d.slice(1), newPrice];
     return {
       ...item,
@@ -70,22 +100,22 @@ export function syncStapleItems(items: StapleItem[]): StapleItem[] {
 }
 
 export function formatSnapshotDate(date: Date): string {
-  return date.toLocaleDateString("id-ID", {
+  return new Intl.DateTimeFormat("id-ID", {
     weekday: "long",
     day: "2-digit",
     month: "long",
     year: "numeric",
-    timeZone: "UTC",
-  });
+    timeZone: DASHBOARD_TIMEZONE,
+  }).format(date);
 }
 
 export function formatSnapshotShort(date: Date): string {
-  return date.toLocaleDateString("id-ID", {
+  return new Intl.DateTimeFormat("id-ID", {
     day: "2-digit",
     month: "short",
     year: "numeric",
-    timeZone: "UTC",
-  });
+    timeZone: DASHBOARD_TIMEZONE,
+  }).format(date);
 }
 
 // re-export for convenience
