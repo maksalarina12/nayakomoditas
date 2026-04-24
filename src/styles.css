@@ -62,7 +62,6 @@
   --card-foreground: oklch(0.18 0.03 250);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.03 250);
-  /* Navy blue primary */
   --primary: oklch(0.28 0.08 255);
   --primary-foreground: oklch(0.99 0.002 247);
   --secondary: oklch(0.96 0.005 247);
@@ -71,15 +70,11 @@
   --muted-foreground: oklch(0.5 0.02 250);
   --accent: oklch(0.94 0.012 250);
   --accent-foreground: oklch(0.28 0.08 255);
-  /* Strict red for inflation */
   --destructive: oklch(0.55 0.22 27);
   --destructive-foreground: oklch(0.99 0.002 247);
-  /* Slate gray borders */
   --border: oklch(0.9 0.01 250);
   --input: oklch(0.9 0.01 250);
   --ring: oklch(0.28 0.08 255);
-
-  /* Financial semantic tokens */
   --success: oklch(0.55 0.16 145);
   --success-foreground: oklch(0.99 0.002 247);
   --success-soft: oklch(0.95 0.05 145);
@@ -96,6 +91,36 @@
   --chart-5: oklch(0.5 0.1 200);
 }
 
+.dark {
+  --background: oklch(0.16 0.02 255);
+  --foreground: oklch(0.96 0.004 247);
+  --card: oklch(0.2 0.02 255);
+  --card-foreground: oklch(0.96 0.004 247);
+  --popover: oklch(0.2 0.02 255);
+  --popover-foreground: oklch(0.96 0.004 247);
+  --primary: oklch(0.76 0.08 252);
+  --primary-foreground: oklch(0.18 0.03 250);
+  --secondary: oklch(0.24 0.02 252);
+  --secondary-foreground: oklch(0.95 0.004 247);
+  --muted: oklch(0.24 0.014 252);
+  --muted-foreground: oklch(0.73 0.015 250);
+  --accent: oklch(0.28 0.02 252);
+  --accent-foreground: oklch(0.96 0.004 247);
+  --destructive: oklch(0.66 0.19 27);
+  --destructive-foreground: oklch(0.98 0.004 247);
+  --border: oklch(0.3 0.015 252);
+  --input: oklch(0.3 0.015 252);
+  --ring: oklch(0.76 0.08 252);
+  --success: oklch(0.72 0.15 145);
+  --success-foreground: oklch(0.17 0.02 250);
+  --success-soft: oklch(0.28 0.05 145);
+  --danger-soft: oklch(0.28 0.05 27);
+  --navy: oklch(0.22 0.03 255);
+  --navy-foreground: oklch(0.96 0.004 247);
+  --slate-header: oklch(0.23 0.016 252);
+  --table-stripe: oklch(0.22 0.014 252);
+}
+
 @layer base {
   body {
     font-family: "Inter", system-ui, -apple-system, sans-serif;
@@ -105,7 +130,7 @@
   .font-tabular {
     font-family: var(--tabular-font);
     font-variant-numeric: tabular-nums;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
   }
 }
 
@@ -114,8 +139,34 @@
     border-color: var(--color-border);
   }
 
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
 }
+
+@layer utilities {
+  .dashboard-section {
+    animation: section-enter 420ms ease-out both;
+  }
+}
+
+@keyframes section-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
