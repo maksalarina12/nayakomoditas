@@ -9,23 +9,25 @@ import {
   YAxis,
   ReferenceLine,
 } from "recharts";
-import { Activity, Loader2, TrendingDown, TrendingUp } from "lucide-react";
+import { Activity, Loader2, Minus, TrendingDown, TrendingUp } from "lucide-react";
 import { buildTrendData, formatRupiah, getSelisih, type StapleItem } from "@/lib/staple-data";
 import { cn } from "@/lib/utils";
 
 interface Props {
   item: StapleItem;
   loading: boolean;
+  selectedDateLabel: string;
 }
 
-export function TrendChart({ item, loading }: Props) {
+export function TrendChart({ item, loading, selectedDateLabel }: Props) {
   const data = useMemo(() => buildTrendData(item), [item]);
   const { diff, pct, status } = getSelisih(item);
   const max = Math.max(...item.trend7d);
   const min = Math.min(...item.trend7d);
   const avg = item.trend7d.reduce((a, b) => a + b, 0) / item.trend7d.length;
   const isUp = status === "naik";
-  const lineColor = isUp ? "var(--destructive)" : "var(--success)";
+  const lineColor = status === "naik" ? "var(--destructive)" : status === "turun" ? "var(--success)" : "var(--navy)";
+  const DailyIcon = status === "naik" ? TrendingUp : status === "turun" ? TrendingDown : Minus;
 
   return (
     <div className="rounded-md border border-border bg-card">
@@ -38,7 +40,7 @@ export function TrendChart({ item, loading }: Props) {
         </div>
         <div className="flex items-center gap-2 font-tabular text-[11px] uppercase tracking-wider text-muted-foreground">
           <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-success" />
-          Live · Diperbarui {new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} WIB
+          Snapshot · {selectedDateLabel}
         </div>
       </div>
 
@@ -49,7 +51,7 @@ export function TrendChart({ item, loading }: Props) {
           label="Perubahan Harian"
           value={`${diff > 0 ? "+" : ""}${diff.toLocaleString("id-ID")} (${pct.toFixed(2)}%)`}
           accent={isUp ? "danger" : status === "turun" ? "success" : "muted"}
-          icon={isUp ? TrendingUp : TrendingDown}
+          icon={DailyIcon}
         />
         <StatCell label="Rata-rata 7 Hari" value={formatRupiah(Math.round(avg))} />
       </div>
