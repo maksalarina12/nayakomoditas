@@ -8,37 +8,102 @@ function statusLabel(status: "naik" | "turun" | "stabil") {
   return status === "naik" ? "Naik" : status === "turun" ? "Turun" : "Stabil";
 }
 
+/** Auto-fit column width based on the longest cell content. */
+function autoFitColumns(rows: Record<string, string | number>[], headers: string[]) {
+  return headers.map((h) => {
+    const maxContent = rows.reduce((max, row) => {
+      const v = row[h];
+      const len = v == null ? 0 : String(v).length;
+      return Math.max(max, len);
+    }, h.length);
+    return { wch: Math.min(Math.max(maxContent + 2, 10), 40) };
+  });
+}
+
 export function exportDashboardToExcel(items: StapleItem[], date: Date) {
+  const dateLabel = formatSnapshotDate(date);
+  const dateShort = formatSnapshotShort(date);
+
   const rows = items.map((item) => {
     const { diff, pct, status } = getSelisih(item);
     return {
+      "Tanggal Snapshot": dateShort,
       "Nama Komoditas": item.nama,
       Kategori: item.kategori,
       Satuan: item.satuan,
-      "Harga Kemarin (Rp)": item.hargaKemarin,
-      "Harga Hari Ini (Rp)": item.hargaHariIni,
+      "Harga Kemarin": item.hargaKemarin,
+      "Harga Hari Ini": item.hargaHariIni,
       "Selisih (Rp)": diff,
       "Perubahan (%)": Number(pct.toFixed(2)),
       Status: statusLabel(status),
     };
   });
 
-  const worksheet = XLSX.utils.json_to_sheet(rows);
-  worksheet["!cols"] = [
-    { wch: 28 }, { wch: 22 }, { wch: 10 }, { wch: 18 },
-    { wch: 18 }, { wch: 14 }, { wch: 14 }, { wch: 12 },
+  const headers = [
+    "Tanggal Snapshot",
+    "Nama Komoditas",
+    "Kategori",
+    "Satuan",
+    "Harga Kemarin",
+    "Harga Hari Ini",
+    "Selisih (Rp)",
+    "Perubahan (%)",
+    "Status",
   ];
 
+  // Build sheet starting with a small report header band on rows 1-3
+  const worksheet = XLSX.utils.aoa_to_sheet([
+    ["SIPANGAN — Laporan Harian Harga Bahan Pokok"],
+    [`Snapshot Tanggal: ${dateLabel}`],
+    [`Total Komoditas: ${items.length}`],
+    [],
+  ]);
+
+  XLSX.utils.sheet_add_json(worksheet, rows, { origin: "A5", header: headers });
+
+  // Column widths (auto-fit)
+  worksheet["!cols"] = autoFitColumns(rows, headers);
+
+  // Merge title row across all columns
+  worksheet["!merges"] = [
+    { s: { r: 0, c: 0 }, e: { r: 0, c: headers.length - 1 } },
+    { s: { r: 1, c: 0 }, e: { r: 1, c: headers.length - 1 } },
+    { s: { r: 2, c: 0 }, e: { r: 2, c: headers.length - 1 } },
+  ];
+
+  // Apply Rupiah number format to currency columns (E, F, G = idx 4,5,6) for data rows
+  const currencyFmt = '"Rp"#,##0;[Red]"Rp"-#,##0;"-"';
+  const pctFmt = '0.00"%"';
+  const dataStartRow = 6; // rows 1-5 are headers (header band rows 1-3 + blank row 4 + table header row 5)
+  const dataEndRow = dataStartRow + rows.length - 1;
+
+  for (let r = dataStartRow; r <= dataEndRow; r++) {
+    ["E", "F", "G"].forEach((col) => {
+      const ref = `${col}${r}`;
+      if (worksheet[ref]) worksheet[ref].z = currencyFmt;
+    });
+    const pctRef = `H${r}`;
+    if (worksheet[pctRef]) worksheet[pctRef].z = pctFmt;
+  }
+
   const workbook = XLSX.utils.book_new();
+  workbook.Props = {
+    Title: "SIPANGAN — Harga Bahan Pokok",
+    Subject: `Snapshot ${dateLabel}`,
+    Author: "Sistem Informasi Pangan Nasional",
+    CreatedDate: new Date(),
+  };
   XLSX.utils.book_append_sheet(workbook, worksheet, "Harga Bahan Pokok");
 
-  const filename = `SIPANGAN_Harga_${formatSnapshotShort(date).replace(/\s/g, "_")}.xlsx`;
+  const filename = `SIPANGAN_Harga_${dateShort.replace(/\s/g, "_")}.xlsx`;
   XLSX.writeFile(workbook, filename);
 }
 
 export function exportDashboardToPdf(items: StapleItem[], date: Date) {
   const doc = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
   const pageWidth = doc.internal.pageSize.getWidth();
+  const dateLabel = formatSnapshotDate(date);
+  const dateShort = formatSnapshotShort(date);
 
   // Header band
   doc.setFillColor(15, 23, 42);
@@ -51,13 +116,21 @@ export function exportDashboardToPdf(items: StapleItem[], date: Date) {
   doc.setFontSize(10);
   doc.text("Direktorat Stabilitas Harga Pokok · Republik Indonesia", 40, 50);
 
+  // Date pill on the right
+  doc.setFillColor(30, 41, 59);
+  doc.roundedRect(pageWidth - 240, 22, 200, 28, 4, 4, "F");
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.text(`SNAPSHOT ${dateShort.toUpperCase()}`, pageWidth - 230, 40);
+
   doc.setTextColor(40, 40, 40);
   doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
   doc.text("Laporan Harian Harga Bahan Pokok", 40, 100);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
-  doc.text(`Snapshot Tanggal: ${formatSnapshotDate(date)}`, 40, 116);
+  doc.text(`Snapshot Tanggal: ${dateLabel}`, 40, 116);
   doc.text(`Total Komoditas: ${items.length}`, 40, 130);
 
   const body = items.map((item) => {
@@ -109,6 +182,6 @@ export function exportDashboardToPdf(items: StapleItem[], date: Date) {
     finalY + 24,
   );
 
-  const filename = `SIPANGAN_Laporan_${formatSnapshotShort(date).replace(/\s/g, "_")}.pdf`;
+  const filename = `SIPANGAN_Laporan_${dateShort.replace(/\s/g, "_")}.pdf`;
   doc.save(filename);
 }
