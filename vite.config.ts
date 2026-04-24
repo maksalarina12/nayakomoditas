@@ -6,10 +6,11 @@
 // You can pass additional config via defineConfig({ vite: { ... } }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-// GitHub Pages base path: set VITE_BASE_PATH="/your-repo-name/" during the
-// CI build (the workflow does this automatically). Locally / on Lovable
-// preview it stays "/" so nothing else changes.
-const basePath = process.env.VITE_BASE_PATH ?? "/";
+// GitHub Pages base path.
+// Hardcoded to "/nayakomoditas/" so the production build at
+// https://<username>.github.io/nayakomoditas/ resolves all assets correctly.
+// Override via VITE_BASE_PATH env var if you rename the repo or move to root.
+const basePath = process.env.VITE_BASE_PATH ?? "/nayakomoditas/";
 
 export default defineConfig({
   // Disable the Cloudflare Worker build so we get a pure static client bundle
