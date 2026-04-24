@@ -1,15 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  Building2,
-  ShieldCheck,
-} from "lucide-react";
+import { ShieldCheck, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { AIInsightCard } from "@/components/dashboard/AIInsightCard";
 import { DashboardToolbar } from "@/components/dashboard/DashboardToolbar";
 import { LiveSmartAlerts } from "@/components/dashboard/LiveSmartAlerts";
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { PriceTable } from "@/components/dashboard/PriceTable";
+import { SipanganLogo } from "@/components/dashboard/SipanganLogo";
+import { ThemeToggle } from "@/components/dashboard/ThemeToggle";
 import { TrendChart } from "@/components/dashboard/TrendChart";
 import { exportDashboardToExcel, exportDashboardToPdf } from "@/lib/dashboard-exports";
 import {
@@ -20,6 +19,7 @@ import {
   syncStapleItems,
 } from "@/lib/dashboard-utils";
 import { stapleItems } from "@/lib/staple-data";
+import { applyTheme, resolveTheme, setTheme, type AppTheme } from "@/lib/theme";
 
 export const Route = createFileRoute("/")({
   component: DashboardPage,
