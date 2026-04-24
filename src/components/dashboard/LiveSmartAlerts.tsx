@@ -49,6 +49,7 @@ const ALERTS: AlertItem[] = [
   },
 ];
 
+// FIXED: Menggunakan standard Tailwind classes dengan dukungan dark mode dinamis
 const LEVEL_CONFIG: Record<AlertLevel, {
   icon: typeof AlertTriangle;
   iconClass: string;
@@ -58,44 +59,46 @@ const LEVEL_CONFIG: Record<AlertLevel, {
 }> = {
   warning: {
     icon: TrendingUp,
-    iconClass: "text-warning bg-warning-soft",
-    ringClass: "ring-warning/30",
+    iconClass: "text-amber-600 bg-amber-100 dark:bg-amber-500/20 dark:text-amber-400",
+    ringClass: "ring-amber-300 dark:ring-amber-500/30",
     badge: "Peringatan",
-    badgeClass: "bg-warning-soft text-warning",
+    badgeClass: "bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-400",
   },
   success: {
     icon: CheckCircle2,
-    iconClass: "text-success bg-success-soft",
-    ringClass: "ring-success/20",
+    iconClass: "text-emerald-600 bg-emerald-100 dark:bg-emerald-500/20 dark:text-emerald-400",
+    ringClass: "ring-emerald-300 dark:ring-emerald-500/30",
     badge: "Stabil",
-    badgeClass: "bg-success-soft text-success",
+    badgeClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-400",
   },
   danger: {
     icon: AlertTriangle,
-    iconClass: "text-destructive bg-danger-soft",
-    ringClass: "ring-destructive/20",
+    iconClass: "text-red-600 bg-red-100 dark:bg-red-500/20 dark:text-red-400",
+    ringClass: "ring-red-300 dark:ring-red-500/30",
     badge: "Kritis",
-    badgeClass: "bg-danger-soft text-destructive",
+    badgeClass: "bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-400",
   },
   info: {
     icon: Info,
-    iconClass: "text-navy bg-accent",
-    ringClass: "ring-navy/20",
+    iconClass: "text-blue-600 bg-blue-100 dark:bg-blue-500/20 dark:text-blue-400",
+    ringClass: "ring-blue-300 dark:ring-blue-500/30",
     badge: "Info",
-    badgeClass: "bg-accent text-navy",
+    badgeClass: "bg-blue-100 text-blue-800 dark:bg-blue-500/20 dark:text-blue-400",
   },
 };
 
 export function LiveSmartAlerts() {
   return (
     <div className="flex h-full flex-col rounded-md border border-border bg-card">
-      <div className="flex items-center justify-between gap-2 border-b border-border bg-slate-header px-4 py-3">
+      {/* FIXED: bg-slate-header diganti bg-muted/50 agar nyambung di kedua tema */}
+      <div className="flex items-center justify-between gap-2 border-b border-border bg-muted/50 px-4 py-3">
         <div className="flex items-center gap-2">
           <div className="relative flex h-6 w-6 items-center justify-center">
             <span className="absolute inline-flex h-3 w-3 animate-ping rounded-full bg-destructive opacity-60" />
             <Radio className="h-4 w-4 text-destructive" />
           </div>
-          <h2 className="text-sm font-bold uppercase tracking-wider text-navy">
+          {/* FIXED: text-navy diganti text-foreground agar kelihatan di dark mode */}
+          <h2 className="text-sm font-bold uppercase tracking-wider text-foreground">
             Live Smart Alerts
           </h2>
         </div>
@@ -117,7 +120,6 @@ export function LiveSmartAlerts() {
                 className={cn(
                   "flex h-8 w-8 shrink-0 items-center justify-center rounded-md ring-1",
                   config.iconClass,
-                  config.ringClass,
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -136,6 +138,7 @@ export function LiveSmartAlerts() {
                     {alert.timeAgo}
                   </span>
                 </div>
+                {/* Teks message utama sudah text-foreground, aman */}
                 <p className="text-xs font-semibold leading-snug text-foreground">
                   {alert.message}
                 </p>
@@ -146,7 +149,7 @@ export function LiveSmartAlerts() {
         })}
       </div>
 
-      <div className="border-t border-border bg-slate-header px-4 py-2 font-tabular text-[10px] uppercase tracking-wider text-muted-foreground">
+      <div className="border-t border-border bg-muted/50 px-4 py-2 font-tabular text-[10px] uppercase tracking-wider text-muted-foreground">
         Sumber: Sensor IoT pasar · Sentinel AI Indonesia
       </div>
     </div>
