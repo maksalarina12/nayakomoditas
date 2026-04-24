@@ -232,8 +232,8 @@ export function AIInsightCard() {
     activeInsight.riskLevel === "Tinggi"
       ? "bg-danger-soft text-destructive"
       : activeInsight.riskLevel === "Rendah"
-        ? "bg-success-soft text-success"
-        : "bg-warning-soft text-warning-foreground";
+      ? "bg-success-soft text-success"
+        : "bg-amber-100 text-amber-800";
 
   return (
     <div className="group relative overflow-hidden rounded-lg">
