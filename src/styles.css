@@ -50,6 +50,10 @@
   --color-navy-foreground: var(--navy-foreground);
   --color-slate-header: var(--slate-header);
   --color-table-stripe: var(--table-stripe);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-ai: var(--ai);
+  --color-ai-soft: var(--ai-soft);
   --font-tabular: var(--tabular-font);
 }
 
