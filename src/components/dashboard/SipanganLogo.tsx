@@ -2,18 +2,33 @@ import { LineChart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Props {
+  /** When true, hides the text label on small screens (icon-only). */
   compact?: boolean;
+  /** Use light text styling — for placement on dark navy backgrounds. */
+  onDark?: boolean;
 }
 
-export function SipanganLogo({ compact = false }: Props) {
+export function SipanganLogo({ compact = false, onDark = false }: Props) {
   return (
-    <div className="flex items-center gap-3">
-      <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-md border border-primary/20 bg-primary/5 shadow-sm">
-        <div className="absolute inset-[6px] rounded-[5px] border border-primary/15" />
+    <div className="flex items-center gap-2.5 sm:gap-3">
+      <div
+        className={cn(
+          "relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-md border shadow-sm sm:h-10 sm:w-10",
+          onDark
+            ? "border-navy-foreground/25 bg-navy-foreground/10"
+            : "border-primary/20 bg-primary/5",
+        )}
+      >
+        <div
+          className={cn(
+            "absolute inset-[6px] rounded-[5px] border",
+            onDark ? "border-navy-foreground/20" : "border-primary/15",
+          )}
+        />
         <svg
           viewBox="0 0 40 40"
           aria-hidden
-          className="h-7 w-7 text-primary"
+          className={cn("h-6 w-6 sm:h-7 sm:w-7", onDark ? "text-navy-foreground" : "text-primary")}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -37,15 +52,36 @@ export function SipanganLogo({ compact = false }: Props) {
 
       <div className={cn("min-w-0", compact && "hidden sm:block")}>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-bold tracking-wide text-foreground">SIPANGAN</span>
+          <span
+            className={cn(
+              "text-sm font-bold tracking-wide",
+              onDark ? "text-navy-foreground" : "text-foreground",
+            )}
+          >
+            SIPANGAN
+          </span>
           {!compact && (
-            <span className="inline-flex items-center gap-1 rounded-sm border border-primary/15 bg-primary/5 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
+            <span
+              className={cn(
+                "inline-flex items-center gap-1 rounded-sm border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
+                onDark
+                  ? "border-navy-foreground/30 bg-navy-foreground/10 text-navy-foreground"
+                  : "border-primary/15 bg-primary/5 text-primary",
+              )}
+            >
               <LineChart className="h-3 w-3" />
               AI
             </span>
           )}
         </div>
-        <p className="text-[11px] text-muted-foreground">Sistem Informasi Pangan Nasional</p>
+        <p
+          className={cn(
+            "text-[11px]",
+            onDark ? "text-navy-foreground/70" : "text-muted-foreground",
+          )}
+        >
+          Sistem Informasi Pangan Nasional
+        </p>
       </div>
     </div>
   );
