@@ -5,7 +5,9 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { toast } from "sonner";
+import { AIInsightCard } from "@/components/dashboard/AIInsightCard";
 import { DashboardToolbar } from "@/components/dashboard/DashboardToolbar";
+import { LiveSmartAlerts } from "@/components/dashboard/LiveSmartAlerts";
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { PriceTable } from "@/components/dashboard/PriceTable";
 import { TrendChart } from "@/components/dashboard/TrendChart";
@@ -202,6 +204,16 @@ function DashboardPage() {
         {/* Section: Chart */}
         <section>
           <TrendChart item={selected} loading={loading} selectedDateLabel={selectedDateLabel} />
+        </section>
+
+        {/* Section: AI + Live Alerts */}
+        <section className="grid gap-4 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <AIInsightCard />
+          </div>
+          <div className="lg:col-span-1">
+            <LiveSmartAlerts />
+          </div>
         </section>
 
         {/* Section: Table */}
