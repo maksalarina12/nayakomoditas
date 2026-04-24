@@ -144,16 +144,18 @@ function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background transition-colors duration-300">
-      <header className="border-b border-border bg-navy text-navy-foreground shadow-sm">
+      {/* FIXED: Ditambahkan dark:bg-card dan penyesuaian teks agar rapi di dark mode */}
+      <header className="border-b border-border bg-navy text-navy-foreground shadow-sm dark:bg-card dark:text-foreground">
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <SipanganLogo onDark />
 
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="hidden items-center gap-3 text-[11px] md:flex">
-              <span className="inline-flex items-center gap-1.5 text-navy-foreground/85">
+              {/* FIXED: Warna teks disesuaikan di dark mode */}
+              <span className="inline-flex items-center gap-1.5 text-navy-foreground/85 dark:text-muted-foreground">
                 <ShieldCheck className="h-3.5 w-3.5" /> Data Terverifikasi
               </span>
-              <span className="font-tabular text-navy-foreground/75">
+              <span className="font-tabular text-navy-foreground/75 dark:text-muted-foreground">
                 Snapshot {selectedDateLabel}
               </span>
             </div>
@@ -168,7 +170,8 @@ function DashboardPage() {
             <p className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
               <Sparkles className="h-3.5 w-3.5 text-primary" /> Dashboard Eksekutif
             </p>
-            <h1 className="mt-1 text-xl font-bold tracking-tight text-navy sm:text-2xl">
+            {/* FIXED: text-navy diubah jadi dark:text-foreground */}
+            <h1 className="mt-1 text-xl font-bold tracking-tight text-navy sm:text-2xl dark:text-foreground">
               Pemantauan Harga Bahan Pokok
             </h1>
             <p className="mt-1 font-tabular text-[11px] uppercase tracking-wider text-muted-foreground md:hidden">
@@ -244,10 +247,11 @@ function DashboardPage() {
   );
 }
 
+// FIXED: text-navy diubah jadi dark:text-foreground
 function SectionHeader({ label, sub }: { label: string; sub?: string }) {
   return (
     <div className="mb-3 flex items-baseline justify-between gap-3 border-b border-border pb-2">
-      <h2 className="text-sm font-bold uppercase tracking-wider text-navy">{label}</h2>
+      <h2 className="text-sm font-bold uppercase tracking-wider text-navy dark:text-foreground">{label}</h2>
       {sub && <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{sub}</span>}
     </div>
   );
