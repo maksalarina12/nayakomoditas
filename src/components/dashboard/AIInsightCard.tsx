@@ -232,8 +232,8 @@ export function AIInsightCard() {
     activeInsight.riskLevel === "Tinggi"
       ? "bg-danger-soft text-destructive"
       : activeInsight.riskLevel === "Rendah"
-      ? "bg-success-soft text-success"
-        : "bg-amber-100 text-amber-800";
+        ? "bg-success-soft text-success"
+        : "bg-warning-soft text-warning";
 
   return (
     <div className="group relative overflow-hidden rounded-lg">
@@ -243,7 +243,7 @@ export function AIInsightCard() {
         className="absolute inset-0 rounded-lg opacity-70"
         style={{
           background:
-            "linear-gradient(135deg, oklch(0.55 0.22 290 / 0.35), oklch(0.6 0.18 250 / 0.25), oklch(0.55 0.22 290 / 0.35))",
+            "linear-gradient(135deg, var(--ai) / 35%, var(--primary) / 25%, var(--ai) / 35%)",
           padding: "1px",
           WebkitMask:
             "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
@@ -251,12 +251,12 @@ export function AIInsightCard() {
           maskComposite: "exclude",
         }}
       />
-      <div className="relative rounded-lg bg-card shadow-[0_0_40px_-12px_oklch(0.55_0.22_290/0.35)]">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-gradient-to-r from-[oklch(0.97_0.03_290)] via-card to-[oklch(0.97_0.03_250)] px-5 py-3">
+      <div className="relative rounded-lg bg-card shadow-[0_0_40px_-12px_var(--ai)]">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-ai-soft/50 px-4 py-3 sm:px-5">
           <div className="flex items-center gap-2">
             <div className="relative">
-              <div className="absolute inset-0 animate-pulse rounded-md bg-[oklch(0.55_0.22_290)] opacity-30 blur-md" />
-              <div className="relative flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-[oklch(0.55_0.22_290)] to-[oklch(0.45_0.2_260)] text-white shadow">
+              <div className="absolute inset-0 animate-pulse rounded-md bg-ai opacity-30 blur-md" />
+              <div className="relative flex h-7 w-7 items-center justify-center rounded-md bg-ai text-white shadow">
                 <BrainCircuit className="h-4 w-4" />
               </div>
             </div>
@@ -269,13 +269,13 @@ export function AIInsightCard() {
               </p>
             </div>
           </div>
-          <span className="inline-flex items-center gap-1.5 rounded-sm border border-[oklch(0.55_0.22_290/0.3)] bg-[oklch(0.55_0.22_290/0.08)] px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[oklch(0.45_0.22_290)]">
+          <span className="inline-flex items-center gap-1.5 rounded-sm border border-ai/30 bg-ai/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-ai">
             <Leaf className="h-3 w-3" />
             Sustainability Mode
           </span>
         </div>
 
-        <div className="space-y-4 px-5 py-5">
+        <div className="space-y-4 px-4 py-5 sm:px-5">
           {/* Location chat input */}
           <div className="space-y-2">
             <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
@@ -287,7 +287,7 @@ export function AIInsightCard() {
                 e.preventDefault();
                 handleGenerate();
               }}
-              className="flex gap-2"
+              className="flex flex-col gap-2 sm:flex-row"
             >
               <div className="relative flex-1">
                 <MapPin className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
@@ -302,7 +302,7 @@ export function AIInsightCard() {
               <Button
                 type="submit"
                 disabled={phase === "loading" || phase === "typing"}
-                className="h-10 gap-2 bg-gradient-to-r from-[oklch(0.45_0.22_290)] to-[oklch(0.4_0.2_260)] text-sm font-semibold text-white shadow-[0_8px_24px_-8px_oklch(0.45_0.22_290/0.6)] transition-transform hover:-translate-y-0.5"
+                className="h-10 gap-2 bg-ai text-sm font-semibold text-white shadow-[0_8px_24px_-8px_var(--ai)] transition-transform hover:-translate-y-0.5 hover:bg-ai/90"
               >
                 {phase === "loading" || phase === "typing" ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -314,7 +314,7 @@ export function AIInsightCard() {
             </form>
 
             {/* Quick region chips */}
-            <div className="flex flex-wrap gap-1.5 pt-1">
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Cepat:
               </span>
@@ -324,7 +324,7 @@ export function AIInsightCard() {
                   type="button"
                   onClick={() => handleQuickRegion(r)}
                   disabled={phase === "loading" || phase === "typing"}
-                  className="rounded-full border border-border bg-background px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground transition-colors hover:border-[oklch(0.55_0.22_290/0.4)] hover:bg-[oklch(0.55_0.22_290/0.06)] hover:text-[oklch(0.45_0.22_290)] disabled:opacity-50"
+                  className="rounded-full border border-border bg-background px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground transition-colors hover:border-ai/40 hover:bg-ai/10 hover:text-ai disabled:opacity-50"
                 >
                   {r}
                 </button>
@@ -341,8 +341,8 @@ export function AIInsightCard() {
           )}
 
           {phase === "loading" && (
-            <div className="flex items-center gap-3 rounded-md border border-dashed border-[oklch(0.55_0.22_290/0.3)] bg-[oklch(0.55_0.22_290/0.04)] px-4 py-5">
-              <Loader2 className="h-5 w-5 animate-spin text-[oklch(0.45_0.22_290)]" />
+            <div className="flex items-center gap-3 rounded-md border border-dashed border-ai/30 bg-ai/5 px-4 py-5">
+              <Loader2 className="h-5 w-5 animate-spin text-ai" />
               <div>
                 <p className="text-sm font-semibold text-foreground">
                   AI sedang menganalisis {activeInsight.region}...
@@ -356,15 +356,15 @@ export function AIInsightCard() {
 
           {(phase === "typing" || phase === "done") && (
             <div className="space-y-3">
-              <div className="rounded-md border border-[oklch(0.55_0.22_290/0.25)] bg-gradient-to-br from-[oklch(0.98_0.02_290)] to-card p-4">
+              <div className="rounded-md border border-ai/25 bg-ai-soft/40 p-4">
                 <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <Sparkles className="h-3.5 w-3.5 text-[oklch(0.45_0.22_290)]" />
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[oklch(0.45_0.22_290)]">
+                    <Sparkles className="h-3.5 w-3.5 text-ai" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-ai">
                       Hasil Analisis AI
                     </span>
                   </div>
-                  <span className="inline-flex items-center gap-1 rounded-sm bg-navy/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-navy">
+                  <span className="inline-flex items-center gap-1 rounded-sm bg-navy/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-navy">
                     <MapPin className="h-2.5 w-2.5" />
                     {activeInsight.region} · {activeInsight.province}
                   </span>
@@ -372,7 +372,7 @@ export function AIInsightCard() {
                 <p className="text-sm leading-relaxed text-foreground">
                   {typed}
                   {phase === "typing" && (
-                    <span className="ml-0.5 inline-block h-4 w-[2px] -translate-y-[1px] animate-pulse bg-[oklch(0.45_0.22_290)] align-middle" />
+                    <span className="ml-0.5 inline-block h-4 w-[2px] -translate-y-[1px] animate-pulse bg-ai align-middle" />
                   )}
                 </p>
               </div>
@@ -380,7 +380,7 @@ export function AIInsightCard() {
               {phase === "done" && (
                 <>
                   {/* Nearby markets recommendation */}
-                  <div className="rounded-md border border-border bg-muted/20 px-4 py-3">
+                  <div className="rounded-md border border-border bg-muted/30 px-4 py-3">
                     <div className="mb-2 flex items-center gap-1.5">
                       <MapPin className="h-3 w-3 text-success" />
                       <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
@@ -424,7 +424,7 @@ export function AIInsightCard() {
                       </Button>
                       <Button
                         size="sm"
-                        className="h-8 gap-1.5 bg-gradient-to-r from-[oklch(0.45_0.22_290)] to-[oklch(0.4_0.2_260)] text-xs text-white"
+                        className="h-8 gap-1.5 bg-ai text-xs text-white hover:bg-ai/90"
                         onClick={handleGenerate}
                       >
                         <Send className="h-3.5 w-3.5" />
