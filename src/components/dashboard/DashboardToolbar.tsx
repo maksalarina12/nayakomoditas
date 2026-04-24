@@ -20,6 +20,10 @@ interface Props {
   onExportPdf: () => void;
 }
 
+function getCalendarKey(date: Date) {
+  return format(date, "yyyy-MM-dd");
+}
+
 export function DashboardToolbar({
   query,
   selectedDate,
@@ -32,6 +36,9 @@ export function DashboardToolbar({
   onExportExcel,
   onExportPdf,
 }: Props) {
+  const minKey = getCalendarKey(minDate);
+  const maxKey = getCalendarKey(maxDate);
+
   return (
     <div className="flex flex-wrap items-center gap-2">
       <div className="relative">
@@ -63,9 +70,13 @@ export function DashboardToolbar({
             mode="single"
             selected={selectedDate}
             onSelect={onDateChange}
-            disabled={(date) => date < minDate || date > maxDate}
+            disabled={(date) => {
+              const key = getCalendarKey(date);
+              return key < minKey || key > maxKey;
+            }}
             defaultMonth={selectedDate}
             initialFocus
+            className="pointer-events-auto"
           />
         </PopoverContent>
       </Popover>
@@ -102,3 +113,4 @@ export function DashboardToolbar({
     </div>
   );
 }
+
