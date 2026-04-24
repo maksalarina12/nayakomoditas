@@ -45,6 +45,13 @@ function DashboardPage() {
   const [selectedId, setSelectedId] = useState<string>("beras-premium");
   const [loading, setLoading] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [themeMode, setThemeMode] = useState<AppTheme>("light");
+
+  useEffect(() => {
+    const initialTheme = resolveTheme();
+    setThemeMode(initialTheme);
+    applyTheme(initialTheme);
+  }, []);
 
   const snapshotIndex = useMemo(
     () => getSnapshotIndex(selectedDate, availableDates),
@@ -87,7 +94,7 @@ function DashboardPage() {
     setTimeout(() => {
       setSelectedId(id);
       setLoading(false);
-    }, 700);
+    }, 350);
   };
 
   const handleSync = () => {
@@ -102,7 +109,7 @@ function DashboardPage() {
       toast.success("Sinkronisasi berhasil", {
         description: "Data harga mock telah diperbarui untuk simulasi pasar terbaru.",
       });
-    }, 1100);
+    }, 900);
   };
 
   const handleExportExcel = () => {
@@ -129,43 +136,39 @@ function DashboardPage() {
     });
   };
 
+  const handleToggleTheme = () => {
+    const nextTheme: AppTheme = themeMode === "light" ? "dark" : "light";
+    setThemeMode(nextTheme);
+    setTheme(nextTheme);
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Top Bar */}
-      <header className="border-b border-border bg-navy text-navy-foreground">
+    <div className="min-h-screen bg-background transition-colors duration-300">
+      <header className="border-b border-border bg-navy text-navy-foreground shadow-sm">
         <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-6 py-3">
+          <SipanganLogo compact />
+
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-sm bg-navy-foreground/10 ring-1 ring-navy-foreground/20">
-              <Building2 className="h-4 w-4" />
+            <ThemeToggle theme={themeMode} onToggle={handleToggleTheme} />
+            <div className="hidden items-center gap-4 text-[11px] md:flex">
+              <span className="inline-flex items-center gap-1.5 text-navy-foreground/80">
+                <ShieldCheck className="h-3.5 w-3.5" /> Data Terverifikasi
+              </span>
+              <span className="font-tabular text-navy-foreground/70">Snapshot {selectedDateLabel}</span>
             </div>
-            <div>
-              <h1 className="text-sm font-bold tracking-wide">SIPANGAN · Sistem Informasi Pangan Nasional</h1>
-              <p className="text-[11px] text-navy-foreground/70">
-                Direktorat Stabilitas Harga Pokok · Republik Indonesia
-              </p>
-            </div>
-          </div>
-          <div className="hidden items-center gap-4 text-[11px] md:flex">
-            <span className="inline-flex items-center gap-1.5 text-navy-foreground/80">
-              <ShieldCheck className="h-3.5 w-3.5" /> Data Terverifikasi
-            </span>
-            <span className="font-tabular text-navy-foreground/70">
-              Snapshot {selectedDateLabel}
-            </span>
           </div>
         </div>
       </header>
 
-      {/* Sub Header / Toolbar */}
-      <div className="border-b border-border bg-card">
+      <div className="border-b border-border bg-card/95 backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-6 py-4">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-              Dashboard Eksekutif
+            <p className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+              <Sparkles className="h-3.5 w-3.5 text-primary" /> Dashboard Eksekutif
             </p>
-            <h2 className="mt-0.5 text-2xl font-bold tracking-tight text-navy">
+            <h1 className="mt-1 text-2xl font-bold tracking-tight text-navy">
               Pemantauan Harga Bahan Pokok
-            </h2>
+            </h1>
           </div>
           <DashboardToolbar
             query={query}
@@ -183,12 +186,8 @@ function DashboardPage() {
       </div>
 
       <main className="mx-auto max-w-[1400px] space-y-6 px-6 py-6">
-        {/* Section: Executive Summary */}
-        <section>
-          <SectionHeader
-            label="Ringkasan Eksekutif"
-            sub="4 Komoditas Utama Terpantau"
-          />
+        <section className="dashboard-section">
+          <SectionHeader label="Ringkasan Eksekutif" sub="4 Komoditas Utama Terpantau" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {featured.map((item) => (
               <MetricCard
@@ -201,13 +200,11 @@ function DashboardPage() {
           </div>
         </section>
 
-        {/* Section: Chart */}
-        <section>
+        <section className="dashboard-section">
           <TrendChart item={selected} loading={loading} selectedDateLabel={selectedDateLabel} />
         </section>
 
-        {/* Section: AI + Live Alerts */}
-        <section className="grid gap-4 lg:grid-cols-3">
+        <section className="dashboard-section grid gap-4 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <AIInsightCard />
           </div>
@@ -216,18 +213,13 @@ function DashboardPage() {
           </div>
         </section>
 
-        {/* Section: Table */}
-        <section>
+        <section className="dashboard-section">
           <SectionHeader
             label="Buku Besar Harga Komoditas"
             sub={`${filteredItems.length} komoditas · Klik baris untuk memuat grafik volatilitas`}
           />
           {filteredItems.length ? (
-            <PriceTable
-              items={filteredItems}
-              selectedId={selectedId}
-              onSelect={handleSelect}
-            />
+            <PriceTable items={filteredItems} selectedId={selectedId} onSelect={handleSelect} />
           ) : (
             <div className="rounded-md border border-dashed border-border bg-card px-6 py-12 text-center">
               <p className="text-sm font-semibold text-foreground">Komoditas tidak ditemukan</p>
@@ -239,15 +231,10 @@ function DashboardPage() {
         </section>
 
         <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-4 text-[11px] text-muted-foreground">
-          <p>
-            © 2026 SIPANGAN · Data harga merupakan rata-rata nasional dari 514 kota/kabupaten.
-          </p>
-          <p className="font-tabular uppercase tracking-wider">
-            Versi 4.2.1 · Audit Internal Lulus
-          </p>
+          <p>© 2026 SIPANGAN · Data harga merupakan rata-rata nasional dari 514 kota/kabupaten.</p>
+          <p className="font-tabular uppercase tracking-wider">Versi 4.2.1 · Audit Internal Lulus</p>
         </footer>
       </main>
-
     </div>
   );
 }
@@ -255,12 +242,8 @@ function DashboardPage() {
 function SectionHeader({ label, sub }: { label: string; sub?: string }) {
   return (
     <div className="mb-3 flex items-baseline justify-between gap-3 border-b border-border pb-2">
-      <h3 className="text-sm font-bold uppercase tracking-wider text-navy">{label}</h3>
-      {sub && (
-        <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
-          {sub}
-        </span>
-      )}
+      <h2 className="text-sm font-bold uppercase tracking-wider text-navy">{label}</h2>
+      {sub && <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{sub}</span>}
     </div>
   );
 }
