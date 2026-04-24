@@ -6,4 +6,20 @@
 // You can pass additional config via defineConfig({ vite: { ... } }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-export default defineConfig();
+// GitHub Pages base path: set VITE_BASE_PATH="/your-repo-name/" during the
+// CI build (the workflow does this automatically). Locally / on Lovable
+// preview it stays "/" so nothing else changes.
+const basePath = process.env.VITE_BASE_PATH ?? "/";
+
+export default defineConfig({
+  // Disable the Cloudflare Worker build so we get a pure static client bundle
+  // suitable for GitHub Pages. The TanStack Start plugin then ships a SPA.
+  cloudflare: false,
+  tanstackStart: {
+    target: "static",
+    spa: { enabled: true },
+  },
+  vite: {
+    base: basePath,
+  },
+});
