@@ -58,10 +58,10 @@ const LEVEL_CONFIG: Record<AlertLevel, {
 }> = {
   warning: {
     icon: TrendingUp,
-    iconClass: "text-amber-600 bg-amber-50",
-    ringClass: "ring-amber-200",
+    iconClass: "text-warning bg-warning-soft",
+    ringClass: "ring-warning/30",
     badge: "Peringatan",
-    badgeClass: "bg-amber-50 text-amber-700",
+    badgeClass: "bg-warning-soft text-warning",
   },
   success: {
     icon: CheckCircle2,
@@ -79,10 +79,10 @@ const LEVEL_CONFIG: Record<AlertLevel, {
   },
   info: {
     icon: Info,
-    iconClass: "text-navy bg-[oklch(0.94_0.03_255)]",
-    ringClass: "ring-navy/15",
+    iconClass: "text-navy bg-accent",
+    ringClass: "ring-navy/20",
     badge: "Info",
-    badgeClass: "bg-[oklch(0.94_0.03_255)] text-navy",
+    badgeClass: "bg-accent text-navy",
   },
 };
 

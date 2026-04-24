@@ -40,14 +40,14 @@ export function DashboardToolbar({
   const maxKey = getCalendarKey(maxDate);
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <div className="relative">
+    <div className="flex w-full flex-wrap items-center gap-2 lg:w-auto">
+      <div className="relative w-full sm:w-auto">
         <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
           placeholder="Cari komoditas..."
-          className="h-9 w-56 border-border bg-background pl-8 text-sm"
+          className="h-9 w-full border-border bg-background pl-8 text-sm sm:w-56"
         />
       </div>
 
