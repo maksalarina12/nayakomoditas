@@ -66,6 +66,7 @@ export function DashboardToolbar({
             disabled={(date) => date < minDate || date > maxDate}
             defaultMonth={selectedDate}
             initialFocus
+            className="pointer-events-auto"
           />
         </PopoverContent>
       </Popover>
