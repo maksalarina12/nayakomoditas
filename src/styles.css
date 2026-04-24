@@ -95,6 +95,8 @@
   --chart-5: oklch(0.5 0.1 200);
   --ai: oklch(0.45 0.22 290);
   --ai-soft: oklch(0.96 0.04 290);
+  --warning: oklch(0.55 0.16 75);
+  --warning-soft: oklch(0.96 0.06 75);
 }
 
 .dark {
