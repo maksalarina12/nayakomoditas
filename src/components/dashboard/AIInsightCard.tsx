@@ -20,6 +20,18 @@ interface RegionInsight {
 
 const REGION_DB: RegionInsight[] = [
   {
+    region: "Lhokseumawe",
+    province: "Aceh",
+    hotCommodity: "Cabai Merah Keriting",
+    trendNote: "berada di Rp 45.000/kg dengan inflasi lokal terpantau 6,69%",
+    recommendation:
+      "Pantau pasokan dari Medan lebih awal, amankan stok cabai dan bumbu cepat jual sebelum gangguan distribusi berdampak ke kios UMKM.",
+    route: "Koridor Pasok Medan-Lhokseumawe",
+    riskLevel: "Tinggi",
+    confidence: 94.8,
+    nearbyMarkets: ["Pasar Inpres Lhokseumawe", "Pasar Pusong", "Pasar Batuphat", "Pasar Cunda"],
+  },
+  {
     region: "Banda Aceh",
     province: "Aceh",
     hotCommodity: "Cabai Merah Keriting",
@@ -118,16 +130,16 @@ const REGION_DB: RegionInsight[] = [
 ];
 
 const DEFAULT_REGION: RegionInsight = {
-  region: "Nasional",
-  province: "Indonesia",
-  hotCommodity: "Minyak Goreng Curah",
-  trendNote: "diperkirakan menipis dalam 4 hari ke depan di regional Jawa Barat",
+  region: "Lhokseumawe",
+  province: "Aceh",
+  hotCommodity: "Cabai Merah Keriting",
+  trendNote: "terpantau sensitif terhadap pasokan Medan dengan inflasi lokal 6,69%",
   recommendation:
-    "Aktifkan jalur distribusi cadangan (Sustainability Route B) dan berikan subsidi angkutan agar harga di tingkat konsumen tetap stabil di bawah Rp 17.000.",
-  route: "Sustainability Route B",
-  riskLevel: "Sedang",
-  confidence: 92.4,
-  nearbyMarkets: ["Pasar Induk Cipinang", "Pasar Kramat Jati", "Pasar Caringin", "Pasar Pabean"],
+    "Asisten Analitik UMKM Lhokseumawe merekomendasikan stok lebih awal untuk cabai, bawang, dan minyak goreng saat arus barang Medan melambat.",
+  route: "Koridor Pasok Medan-Lhokseumawe",
+  riskLevel: "Tinggi",
+  confidence: 94.8,
+  nearbyMarkets: ["Pasar Inpres Lhokseumawe", "Pasar Pusong", "Pasar Batuphat", "Pasar Cunda"],
 };
 
 const LOADING_MESSAGES = [
@@ -140,6 +152,17 @@ const LOADING_MESSAGES = [
 function findRegion(query: string): RegionInsight {
   const q = query.trim().toLowerCase();
   if (!q) return DEFAULT_REGION;
+  if (q.includes("kenapa harga naik") || q.includes("medan")) {
+    return {
+      ...DEFAULT_REGION,
+      region: q.includes("medan") ? "Medan → Lhokseumawe" : "Lhokseumawe",
+      trendNote:
+        "mengalami lonjakan karena gangguan pasokan dari Medan, terutama pada cabai dan bumbu dapur yang bergerak cepat",
+      recommendation:
+        "UMKM disarankan mengamankan stok lebih awal, membagi pembelian ke beberapa pemasok, dan menaikkan buffer stok 2-3 hari sebelum distribusi Medan kembali normal.",
+      riskLevel: "Tinggi",
+    };
+  }
   const exact = REGION_DB.find(
     (r) => r.region.toLowerCase() === q || r.province.toLowerCase() === q,
   );
@@ -157,7 +180,7 @@ function findRegion(query: string): RegionInsight {
 }
 
 function buildResponse(insight: RegionInsight): string {
-  return `Analisis AI untuk ${insight.region} (${insight.province}): Komoditas paling diawasi adalah ${insight.hotCommodity}, ${insight.trendNote}. Rekomendasi Tindakan: ${insight.recommendation} Pasar prioritas pemantauan: ${insight.nearbyMarkets.slice(0, 3).join(", ")}.`;
+  return `Rakan AI sebagai Asisten Analitik UMKM Lhokseumawe membaca ${insight.region} (${insight.province}): komoditas paling diawasi adalah ${insight.hotCommodity}, ${insight.trendNote}. Rekomendasi untuk UMKM: ${insight.recommendation} Pasar prioritas pemantauan: ${insight.nearbyMarkets.slice(0, 3).join(", ")}.`;
 }
 
 export function AIInsightCard() {
