@@ -247,7 +247,7 @@ export function AIInsightCard() {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(buildResponse(activeInsight));
     setCopied(true);
-    toast.success("Insight AI disalin ke clipboard");
+    toast.success("Insight Rakan AI disalin ke clipboard");
     setTimeout(() => setCopied(false), 1800);
   };
 
@@ -366,7 +366,7 @@ export function AIInsightCard() {
               <Loader2 className="h-5 w-5 animate-spin text-ai" />
               <div>
                 <p className="text-sm font-semibold text-foreground">
-                  AI sedang menganalisis {activeInsight.region}...
+                  Rakan AI sedang menganalisis {activeInsight.region}...
                 </p>
                 <p className="font-tabular text-[11px] uppercase tracking-wider text-muted-foreground">
                   {LOADING_MESSAGES[loadingMsgIdx]}
