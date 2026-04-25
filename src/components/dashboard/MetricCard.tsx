@@ -16,8 +16,8 @@ export function MetricCard({ item, active, onClick }: Props) {
     <button
       onClick={onClick}
       className={cn(
-        "group relative w-full overflow-hidden rounded-md border bg-card p-5 text-left transition-all",
-        "hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-12px_rgba(15,23,42,0.18)]",
+        "group relative w-full overflow-hidden rounded-md border bg-card p-4 text-left transition-all sm:p-5",
+        "sm:hover:-translate-y-0.5 sm:hover:shadow-[0_8px_24px_-12px_rgba(15,23,42,0.18)]",
         active
           ? "border-navy ring-2 ring-navy/15"
           : "border-border hover:border-navy/40",
@@ -35,7 +35,7 @@ export function MetricCard({ item, active, onClick }: Props) {
           <p className="truncate text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             {item.kategori}
           </p>
-          <h3 className="mt-1 text-base font-semibold text-foreground">{item.nama}</h3>
+          <h3 className="mt-1 text-sm font-semibold text-foreground sm:text-base">{item.nama}</h3>
         </div>
         <span
           className={cn(
@@ -54,10 +54,10 @@ export function MetricCard({ item, active, onClick }: Props) {
       </div>
 
       <div className="mt-4">
-        <div className="font-tabular text-2xl font-bold tracking-tight text-navy">
+        <div className="font-tabular text-xl font-bold tracking-tight text-navy sm:text-2xl">
           {formatRupiah(item.hargaHariIni)}
         </div>
-        <div className="mt-1 flex items-baseline gap-2">
+        <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
           <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
             Sebelumnya
           </span>
