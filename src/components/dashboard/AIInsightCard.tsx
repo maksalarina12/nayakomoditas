@@ -135,7 +135,7 @@ const DEFAULT_REGION: RegionInsight = {
   hotCommodity: "Cabai Merah Keriting",
   trendNote: "terpantau sensitif terhadap pasokan Medan dengan inflasi lokal 6,69%",
   recommendation:
-    "Asisten Analitik UMKM Lhokseumawe merekomendasikan stok lebih awal untuk cabai, bawang, dan minyak goreng saat arus barang Medan melambat.",
+    "Rakan AI sebagai analis UMKM merekomendasikan stok lebih awal untuk cabai, bawang, dan minyak goreng saat arus barang Medan ke Lhokseumawe melambat.",
   route: "Koridor Pasok Medan-Lhokseumawe",
   riskLevel: "Tinggi",
   confidence: 94.8,
@@ -357,7 +357,7 @@ export function AIInsightCard() {
 
           {phase === "idle" && (
             <p className="rounded-md border border-dashed border-border bg-muted/30 px-4 py-4 text-sm text-muted-foreground">
-              Halo! Saya Rakan AI, asisten pintar untuk RAKAN UMKM. Saya memantau data inflasi 6.69% dan harga Bapanas hari ini. Ada komoditas yang ingin dicek harganya?
+              Halo! Saya Rakan AI, asisten pintar RAKAN UMKM. Ada data harga atau tren inflasi yang ingin Anda cek hari ini?
             </p>
           )}
 
