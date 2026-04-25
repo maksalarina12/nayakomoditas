@@ -285,10 +285,10 @@ export function AIInsightCard() {
             </div>
             <div>
               <h2 className="text-sm font-bold uppercase tracking-wider text-navy">
-                SIPANGAN AI · Predictive Market Analysis
+                Rakan AI · Asisten Analitik UMKM Lhokseumawe
               </h2>
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                Powered by Sustainability Engine v2.1 · Regional Mode
+                Food Inflation · Market Prices · Supply Chain Medan
               </p>
             </div>
           </div>
@@ -303,7 +303,7 @@ export function AIInsightCard() {
           <div className="space-y-2">
             <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
               <MapPin className="h-3 w-3" />
-              Tanyakan AI berdasarkan lokasi
+              Tanya Rakan AI
             </label>
             <form
               onSubmit={(e) => {
@@ -317,7 +317,7 @@ export function AIInsightCard() {
                 <Input
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  placeholder="Contoh: Banda Aceh, Surabaya, Jawa Barat..."
+                  placeholder="Contoh: Kenapa harga naik? Medan, Banda Aceh..."
                   className="h-10 pl-8 text-sm"
                   disabled={phase === "loading" || phase === "typing"}
                 />
@@ -332,7 +332,7 @@ export function AIInsightCard() {
                 ) : (
                   <Sparkles className="h-4 w-4" />
                 )}
-                {phase === "idle" || phase === "done" ? "Generate Insight" : "Menganalisis..."}
+                {phase === "idle" || phase === "done" ? "Tanya Rakan AI" : "Menganalisis..."}
               </Button>
             </form>
 
@@ -341,7 +341,7 @@ export function AIInsightCard() {
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Cepat:
               </span>
-              {["Banda Aceh", "Jakarta", "Bandung", "Surabaya", "Makassar", "Denpasar"].map((r) => (
+              {["Lhokseumawe", "Medan", "Banda Aceh", "Jakarta", "Bandung", "Kenapa harga naik?"].map((r) => (
                 <button
                   key={r}
                   type="button"
@@ -357,9 +357,7 @@ export function AIInsightCard() {
 
           {phase === "idle" && (
             <p className="rounded-md border border-dashed border-border bg-muted/30 px-4 py-4 text-sm text-muted-foreground">
-              Masukkan nama kota/provinsi di atas, atau klik chip cepat. AI akan
-              menganalisis komoditas paling fluktuatif & memberikan rekomendasi
-              jalur distribusi spesifik untuk wilayah tersebut.
+              Halo! Saya Rakan AI, asisten pintar untuk RAKAN UMKM. Saya memantau data inflasi 6.69% dan harga Bapanas hari ini. Ada komoditas yang ingin dicek harganya?
             </p>
           )}
 
@@ -384,7 +382,7 @@ export function AIInsightCard() {
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-3.5 w-3.5 text-ai" />
                     <span className="text-[10px] font-bold uppercase tracking-wider text-ai">
-                      Hasil Analisis AI
+                      Hasil Analisis Rakan AI
                     </span>
                   </div>
                   <span className="inline-flex items-center gap-1 rounded-sm bg-navy/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-navy">
