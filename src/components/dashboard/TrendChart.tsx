@@ -44,7 +44,7 @@ export function TrendChart({ item, loading, selectedDateLabel }: Props) {
         </div>
       </div>
 
-      <div className="grid gap-px bg-border sm:grid-cols-4">
+      <div className="grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
         <StatCell label="Komoditas Aktif" value={item.nama} mono={false} />
         <StatCell label="Harga Saat Ini" value={formatRupiah(item.hargaHariIni)} accent="navy" />
         <StatCell
@@ -66,9 +66,9 @@ export function TrendChart({ item, loading, selectedDateLabel }: Props) {
           </div>
         )}
 
-        <div className="h-[320px] w-full">
+        <div className="h-[260px] w-full sm:h-[320px]">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data} margin={{ top: 10, right: 16, left: 8, bottom: 0 }}>
+            <AreaChart data={data} margin={{ top: 10, right: 8, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor={lineColor} stopOpacity={0.25} />
@@ -88,7 +88,7 @@ export function TrendChart({ item, loading, selectedDateLabel }: Props) {
                 fontSize={11}
                 tickLine={false}
                 axisLine={false}
-                width={70}
+                width={56}
                 tickFormatter={(v) => `Rp ${(v / 1000).toFixed(1)}k`}
                 domain={[(dataMin: number) => Math.floor(dataMin * 0.98), (dataMax: number) => Math.ceil(dataMax * 1.02)]}
               />
@@ -108,7 +108,7 @@ export function TrendChart({ item, loading, selectedDateLabel }: Props) {
         </div>
 
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3 font-tabular text-[11px] uppercase tracking-wider">
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-x-4 gap-y-1">
             <span className="text-muted-foreground">
               Tertinggi: <span className="font-bold text-destructive">{formatRupiah(max)}</span>
             </span>
@@ -140,7 +140,7 @@ function StatCell({
   mono?: boolean;
 }) {
   return (
-    <div className="bg-card px-5 py-3">
+    <div className="min-w-0 bg-card px-4 py-3 sm:px-5">
       <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
         {label}
       </p>
@@ -156,7 +156,7 @@ function StatCell({
         )}
       >
         {Icon && <Icon className="h-3.5 w-3.5" />}
-        <span className="truncate">{value}</span>
+        <span className="min-w-0 truncate">{value}</span>
       </div>
     </div>
   );

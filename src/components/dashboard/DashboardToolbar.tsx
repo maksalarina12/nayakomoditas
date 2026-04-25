@@ -40,8 +40,8 @@ export function DashboardToolbar({
   const maxKey = getCalendarKey(maxDate);
 
   return (
-    <div className="flex w-full flex-wrap items-center gap-2 lg:w-auto">
-      <div className="relative w-full sm:w-auto">
+    <div className="grid w-full grid-cols-2 items-center gap-2 sm:flex sm:flex-wrap lg:w-auto lg:justify-end">
+      <div className="relative col-span-2 w-full sm:col-span-1 sm:w-auto">
         <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={query}
@@ -57,7 +57,7 @@ export function DashboardToolbar({
             variant="outline"
             size="sm"
             className={cn(
-              "h-9 gap-2 border-border bg-background font-tabular text-xs",
+              "h-9 w-full justify-center gap-2 border-border bg-background font-tabular text-xs sm:w-auto",
               !selectedDate && "text-muted-foreground",
             )}
           >
@@ -84,7 +84,7 @@ export function DashboardToolbar({
       <Button
         variant="outline"
         size="sm"
-        className="h-9 gap-1.5 border-border bg-background text-xs"
+        className="h-9 w-full gap-1.5 border-border bg-background text-xs sm:w-auto"
         onClick={onSync}
         disabled={syncing}
       >
@@ -95,7 +95,7 @@ export function DashboardToolbar({
       <Button
         variant="outline"
         size="sm"
-        className="h-9 gap-1.5 border-success/40 bg-background text-xs text-success hover:bg-success/5 hover:text-success"
+        className="h-9 w-full gap-1.5 border-success/40 bg-background text-xs text-success hover:bg-success/5 hover:text-success sm:w-auto"
         onClick={onExportExcel}
       >
         <FileSpreadsheet className="h-3.5 w-3.5" />
@@ -104,7 +104,7 @@ export function DashboardToolbar({
 
       <Button
         size="sm"
-        className="h-9 gap-1.5 bg-navy text-xs text-navy-foreground hover:bg-navy/90"
+        className="h-9 w-full gap-1.5 bg-navy text-xs text-navy-foreground hover:bg-navy/90 sm:w-auto"
         onClick={onExportPdf}
       >
         <Download className="h-3.5 w-3.5" />
