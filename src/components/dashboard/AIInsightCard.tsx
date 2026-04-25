@@ -275,15 +275,15 @@ export function AIInsightCard() {
         }}
       />
       <div className="relative rounded-lg bg-card shadow-[0_0_40px_-12px_var(--ai)]">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-ai-soft/50 px-4 py-3 sm:px-5">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-ai-soft/50 px-4 py-3 sm:px-5">
+          <div className="flex min-w-0 items-center gap-2">
             <div className="relative">
               <div className="absolute inset-0 animate-pulse rounded-md bg-ai opacity-30 blur-md" />
               <div className="relative flex h-7 w-7 items-center justify-center rounded-md bg-ai text-white shadow">
                 <BrainCircuit className="h-4 w-4" />
               </div>
             </div>
-            <div>
+            <div className="min-w-0">
               <h2 className="text-sm font-bold uppercase tracking-wider text-navy">
                 Rakan AI · Asisten Analitik UMKM Lhokseumawe
               </h2>
@@ -310,7 +310,7 @@ export function AIInsightCard() {
                 e.preventDefault();
                 handleGenerate();
               }}
-              className="flex flex-col gap-2 sm:flex-row"
+                className="flex flex-col gap-2 sm:flex-row"
             >
               <div className="relative flex-1">
                 <MapPin className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
@@ -325,7 +325,7 @@ export function AIInsightCard() {
               <Button
                 type="submit"
                 disabled={phase === "loading" || phase === "typing"}
-                className="h-10 gap-2 bg-ai text-sm font-semibold text-white shadow-[0_8px_24px_-8px_var(--ai)] transition-transform hover:-translate-y-0.5 hover:bg-ai/90"
+                className="h-10 w-full gap-2 bg-ai text-sm font-semibold text-white shadow-[0_8px_24px_-8px_var(--ai)] transition-transform hover:bg-ai/90 sm:w-auto sm:hover:-translate-y-0.5"
               >
                 {phase === "loading" || phase === "typing" ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -433,11 +433,11 @@ export function AIInsightCard() {
                         Risk: {activeInsight.riskLevel}
                       </span>
                     </div>
-                    <div className="flex gap-1.5">
+                    <div className="grid w-full grid-cols-2 gap-1.5 sm:flex sm:w-auto">
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-8 gap-1.5 text-xs"
+                        className="h-8 w-full gap-1.5 text-xs sm:w-auto"
                         onClick={handleCopy}
                       >
                         {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
@@ -445,7 +445,7 @@ export function AIInsightCard() {
                       </Button>
                       <Button
                         size="sm"
-                        className="h-8 gap-1.5 bg-ai text-xs text-white hover:bg-ai/90"
+                        className="h-8 w-full gap-1.5 bg-ai text-xs text-white hover:bg-ai/90 sm:w-auto"
                         onClick={handleGenerate}
                       >
                         <Send className="h-3.5 w-3.5" />
