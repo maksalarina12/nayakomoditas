@@ -10,7 +10,7 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 // Hardcoded to "/nayakomoditas/" so the production build at
 // https://<username>.github.io/nayakomoditas/ resolves all assets correctly.
 // Override via VITE_BASE_PATH env var if you rename the repo or move to root.
-const basePath = process.env.VITE_BASE_PATH ?? "/nayakomoditas/";
+const basePath = process.env.VITE_BASE_PATH ?? "/rakanumkm/";
 
 export default defineConfig({
   // Disable the Cloudflare Worker build so we get a pure static client bundle
