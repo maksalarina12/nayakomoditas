@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
   component: DashboardPage,
   head: () => ({
     meta: [
-      { title: "Dashboard Harga Bahan Pokok · SIPANGAN" },
+      { title: "RAKAN UMKM - Smart Price Monitoring Lhokseumawe" },
       {
         name: "description",
         content:
@@ -44,7 +44,7 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-const featuredIds = ["beras-premium", "gula-pasir", "minyak-goreng", "telur-ayam"];
+const featuredIds = ["cabai-merah", "beras-premium", "gula-pasir", "telur-ayam"];
 
 function DashboardPage() {
   const availableDates = useMemo(() => getAvailableSnapshotDates(), []);
