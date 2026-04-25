@@ -58,7 +58,7 @@ export function SipanganLogo({ compact = false, onDark = false }: Props) {
               onDark ? "text-navy-foreground" : "text-foreground",
             )}
           >
-            SIPANGAN
+            RAKAN UMKM
           </span>
           {!compact && (
             <span
@@ -80,7 +80,7 @@ export function SipanganLogo({ compact = false, onDark = false }: Props) {
             onDark ? "text-navy-foreground/70" : "text-muted-foreground",
           )}
         >
-          Sistem Informasi Pangan Nasional
+          Smart Price Monitoring Lhokseumawe
         </p>
       </div>
     </div>
