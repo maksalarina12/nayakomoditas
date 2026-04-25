@@ -1,6 +1,6 @@
-# SIPANGAN — Sistem Informasi Pangan Nasional
+# RAKAN UMKM — Smart Price Monitoring Lhokseumawe
 
-Dashboard pemantauan harga bahan pokok dengan analitik AI & sustainability.
+Dashboard pemantauan harga bahan pokok untuk UMKM Kota Lhokseumawe dengan Rakan AI.
 
 ## Deploy ke GitHub Pages (repo: `nayakomoditas`)
 

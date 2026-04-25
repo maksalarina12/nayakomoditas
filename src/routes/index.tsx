@@ -30,15 +30,13 @@ export const Route = createFileRoute("/")({
       { title: "RAKAN UMKM - Smart Price Monitoring Lhokseumawe" },
       {
         name: "description",
-        content:
-          "Platform intelijen harga pangan dan rantai pasok terintegrasi untuk 6,800+ UMKM di Kota Lhokseumawe.",
+        content: "Platform intelijen harga pangan terintegrasi untuk UMKM Kota Lhokseumawe.",
       },
-      { property: "og:title", content: "RAKAN UMKM Dashboard" },
+      { property: "og:title", content: "RAKAN UMKM - Smart Price Monitoring Lhokseumawe" },
       { property: "og:site_name", content: "RAKAN UMKM" },
       {
         property: "og:description",
-        content:
-          "Platform intelijen harga pangan dan rantai pasok terintegrasi untuk 6,800+ UMKM di Kota Lhokseumawe.",
+        content: "Platform intelijen harga pangan terintegrasi untuk UMKM Kota Lhokseumawe.",
       },
     ],
   }),
@@ -130,7 +128,7 @@ function DashboardPage() {
       return;
     }
 
-    exportDashboardToExcel(filteredItems, selectedDate);
+    exportDashboardToExcel(filteredItems, selectedDate, cityProfile);
     toast.success("File Excel berhasil dibuat", {
       description: `Snapshot ${selectedDateLabel} telah diunduh.`,
     });
@@ -142,7 +140,7 @@ function DashboardPage() {
       return;
     }
 
-    exportDashboardToPdf(filteredItems, selectedDate);
+    exportDashboardToPdf(filteredItems, selectedDate, cityProfile);
     toast.success("Laporan PDF berhasil dibuat", {
       description: `Ringkasan harga ${selectedDateLabel} telah diunduh.`,
     });
@@ -232,9 +230,9 @@ function DashboardPage() {
             </div>
           </div>
           <div className="mt-3 grid gap-2 border-t border-border pt-3 sm:grid-cols-3">
-            <CityStat label="UMKM Terpantau" value={cityProfile.umkm} />
-            <CityStat label="Inflasi" value={cityProfile.inflation} />
-            <CityStat label="Sumber" value="BPS Aceh & Open Data Bapanas" />
+          <CityStat key={`umkm-${cityKey}`} label="UMKM Terpantau" value={cityProfile.umkm} />
+          <CityStat key={`inflasi-${cityKey}`} label="Inflasi" value={cityProfile.inflation} />
+          <CityStat key={`sumber-${cityKey}`} label="Sumber" value={cityProfile.source} />
           </div>
         </section>
 
@@ -283,7 +281,7 @@ function DashboardPage() {
         </section>
 
         <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-4 text-[11px] text-muted-foreground">
-          <p>© 2026 SIPANGAN · Data harga merupakan rata-rata nasional dari 514 kota/kabupaten.</p>
+          <p>© 2026 RAKAN UMKM · Data harga merupakan data mock stabil untuk monitoring UMKM.</p>
           <p className="font-tabular uppercase tracking-wider">Versi 4.2.1 · Audit Internal Lulus</p>
         </footer>
       </main>
@@ -305,7 +303,7 @@ function CityStat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-sm bg-muted/60 px-3 py-2">
       <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{label}</p>
-      <p className="mt-1 font-tabular text-sm font-bold text-navy">{value}</p>
+      <p className="mt-1 font-tabular text-sm font-bold text-navy transition-colors duration-300 dark:text-foreground">{value}</p>
     </div>
   );
 }

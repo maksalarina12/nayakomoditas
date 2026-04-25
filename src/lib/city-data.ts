@@ -8,6 +8,7 @@ export interface CityProfile {
   shortLabel: string;
   umkm: string;
   inflation: string;
+  source: string;
   badge: string;
   note: string;
   multipliers: Partial<Record<string, number>>;
@@ -21,6 +22,7 @@ export const CITY_PROFILES: CityProfile[] = [
     shortLabel: "Jakarta",
     umkm: "Nasional",
     inflation: "2.84%",
+    source: "BPS Pusat & PIHPS Nasional",
     badge: "Data Nasional",
     note: "Benchmark konsumsi nasional dan pasar induk utama.",
     multipliers: { "cabai-merah": 0.98, "cabai-rawit": 0.96, "beras-premium": 1.02 },
@@ -32,6 +34,7 @@ export const CITY_PROFILES: CityProfile[] = [
     shortLabel: "Bandung",
     umkm: "Nasional",
     inflation: "2.71%",
+    source: "BPS Pusat & PIHPS Nasional",
     badge: "Data Nasional",
     note: "Harga standar kota besar dengan tekanan distribusi moderat.",
     multipliers: { "cabai-merah": 0.94, "cabai-rawit": 0.95, "minyak-goreng": 0.98 },
@@ -43,6 +46,7 @@ export const CITY_PROFILES: CityProfile[] = [
     shortLabel: "Medan",
     umkm: "Supply Hub",
     inflation: "2.49%",
+    source: "BPS Sumatera Utara & Rantai Pasok Bapanas",
     badge: "Pusat Pasokan (Supply Hub)",
     note: "Kota pemasok utama Sumatera bagian utara untuk komoditas cabai dan bumbu.",
     multipliers: { "cabai-rawit": 0.78, "bawang-merah": 0.86, "bawang-putih": 0.9 },
@@ -54,6 +58,7 @@ export const CITY_PROFILES: CityProfile[] = [
     shortLabel: "Banda Aceh",
     umkm: "Provinsi",
     inflation: "3.21%",
+    source: "BPS Provinsi Aceh & Open Data Bapanas",
     badge: "Benchmark Provinsi Aceh",
     note: "Pembanding provinsi untuk membaca deviasi harga Lhokseumawe.",
     multipliers: { "cabai-merah": 0.92, "cabai-rawit": 0.9, "beras-premium": 0.99 },
@@ -65,6 +70,7 @@ export const CITY_PROFILES: CityProfile[] = [
     shortLabel: "Lhokseumawe",
     umkm: "6,800+ UMKM",
     inflation: "6.69%",
+    source: "BPS Provinsi Aceh & Open Data Bapanas",
     badge: "Fokus RAKAN UMKM",
     note: "Harga lokal prioritas untuk pemantauan UMKM Kota Lhokseumawe.",
     multipliers: { "cabai-rawit": 0.92, "bawang-merah": 0.96, "minyak-goreng": 1.01 },
