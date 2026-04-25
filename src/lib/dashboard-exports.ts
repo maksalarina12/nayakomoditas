@@ -3,6 +3,15 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { formatRupiah, getSelisih, type StapleItem } from "./staple-data";
 import { formatSnapshotDate, formatSnapshotShort } from "./dashboard-utils";
+import { type CityProfile } from "./city-data";
+
+function fileSafe(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+}
 
 function statusLabel(status: "naik" | "turun" | "stabil") {
   return status === "naik" ? "Naik" : status === "turun" ? "Turun" : "Stabil";
@@ -20,9 +29,11 @@ function autoFitColumns(rows: Record<string, string | number>[], headers: string
   });
 }
 
-export function exportDashboardToExcel(items: StapleItem[], date: Date) {
+export function exportDashboardToExcel(items: StapleItem[], date: Date, city: CityProfile) {
   const dateLabel = formatSnapshotDate(date);
   const dateShort = formatSnapshotShort(date);
+  const cityLabel = city.shortLabel;
+  const filenameDate = fileSafe(dateShort);
 
   const rows = items.map((item) => {
     const { diff, pct, status } = getSelisih(item);
@@ -54,12 +65,14 @@ export function exportDashboardToExcel(items: StapleItem[], date: Date) {
   // Build sheet starting with a small report header band on rows 1-3
   const worksheet = XLSX.utils.aoa_to_sheet([
     ["RAKAN UMKM - Laporan Monitoring Harga"],
-    [`Snapshot Tanggal: ${dateLabel}`],
+    [`Lokasi: ${cityLabel}`],
+    [`Tanggal: ${dateLabel}`],
+    [`Sumber: ${city.source}`],
     [`Total Komoditas: ${items.length}`],
     [],
   ]);
 
-  XLSX.utils.sheet_add_json(worksheet, rows, { origin: "A5", header: headers });
+  XLSX.utils.sheet_add_json(worksheet, rows, { origin: "A7", header: headers });
 
   // Column widths (auto-fit)
   worksheet["!cols"] = autoFitColumns(rows, headers);
@@ -69,12 +82,14 @@ export function exportDashboardToExcel(items: StapleItem[], date: Date) {
     { s: { r: 0, c: 0 }, e: { r: 0, c: headers.length - 1 } },
     { s: { r: 1, c: 0 }, e: { r: 1, c: headers.length - 1 } },
     { s: { r: 2, c: 0 }, e: { r: 2, c: headers.length - 1 } },
+    { s: { r: 3, c: 0 }, e: { r: 3, c: headers.length - 1 } },
+    { s: { r: 4, c: 0 }, e: { r: 4, c: headers.length - 1 } },
   ];
 
   // Apply Rupiah number format to currency columns (E, F, G = idx 4,5,6) for data rows
   const currencyFmt = '"Rp"#,##0;[Red]"Rp"-#,##0;"-"';
   const pctFmt = '0.00"%"';
-  const dataStartRow = 6; // rows 1-5 are headers (header band rows 1-3 + blank row 4 + table header row 5)
+  const dataStartRow = 8; // rows 1-7 are report metadata + table header
   const dataEndRow = dataStartRow + rows.length - 1;
 
   for (let r = dataStartRow; r <= dataEndRow; r++) {
@@ -89,21 +104,23 @@ export function exportDashboardToExcel(items: StapleItem[], date: Date) {
   const workbook = XLSX.utils.book_new();
   workbook.Props = {
     Title: "RAKAN UMKM - Laporan Monitoring Harga",
-    Subject: `Snapshot ${dateLabel}`,
+    Subject: `${cityLabel} · Snapshot ${dateLabel}`,
     Author: "RAKAN UMKM",
     CreatedDate: new Date(),
   };
   XLSX.utils.book_append_sheet(workbook, worksheet, "Harga Bahan Pokok");
 
-  const filename = "Data_Harga_RAKAN_UMKM.xlsx";
+  const filename = `Data_Harga_${fileSafe(cityLabel)}_${filenameDate}.xlsx`;
   XLSX.writeFile(workbook, filename);
 }
 
-export function exportDashboardToPdf(items: StapleItem[], date: Date) {
+export function exportDashboardToPdf(items: StapleItem[], date: Date, city: CityProfile) {
   const doc = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
   const pageWidth = doc.internal.pageSize.getWidth();
   const dateLabel = formatSnapshotDate(date);
   const dateShort = formatSnapshotShort(date);
+  const cityLabel = city.shortLabel;
+  const filenameDate = fileSafe(dateShort);
 
   // Header band
   doc.setFillColor(15, 23, 42);
@@ -114,7 +131,7 @@ export function exportDashboardToPdf(items: StapleItem[], date: Date) {
   doc.text("RAKAN UMKM - Laporan Monitoring Harga", 40, 32);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
-  doc.text("Smart Price Monitoring Lhokseumawe · BPS Aceh & Open Data Bapanas", 40, 50);
+  doc.text(`${cityLabel} · ${city.source}`, 40, 50);
 
   // Date pill on the right
   doc.setFillColor(30, 41, 59);
@@ -130,8 +147,10 @@ export function exportDashboardToPdf(items: StapleItem[], date: Date) {
   doc.text("RAKAN UMKM - Laporan Monitoring Harga", 40, 100);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
-  doc.text(`Snapshot Tanggal: ${dateLabel}`, 40, 116);
-  doc.text(`Total Komoditas: ${items.length}`, 40, 130);
+  doc.text(`Lokasi: ${cityLabel}`, 40, 116);
+  doc.text(`Tanggal: ${dateLabel}`, 40, 130);
+  doc.text(`Sumber: ${city.source}`, 40, 144);
+  doc.text(`Total Komoditas: ${items.length}`, 40, 158);
 
   const body = items.map((item) => {
     const { diff, pct, status } = getSelisih(item);
@@ -148,7 +167,7 @@ export function exportDashboardToPdf(items: StapleItem[], date: Date) {
   });
 
   autoTable(doc, {
-    startY: 145,
+    startY: 174,
     head: [[
       "Nama Komoditas", "Kategori", "Satuan",
       "Harga Kemarin", "Harga Hari Ini", "Selisih (Rp)", "Perubahan", "Status",
@@ -177,11 +196,11 @@ export function exportDashboardToPdf(items: StapleItem[], date: Date) {
   doc.setFontSize(8);
   doc.setTextColor(120, 120, 120);
   doc.text(
-    "Sumber: BPS Aceh & Open Data Bapanas · Data mock stabil untuk monitoring UMKM.",
+    `Sumber: ${city.source} · Data mock stabil untuk monitoring UMKM.`,
     40,
     finalY + 24,
   );
 
-  const filename = "Laporan_RAKAN_UMKM_Lhokseumawe.pdf";
+  const filename = `Laporan_Harga_${fileSafe(cityLabel)}_${filenameDate}.pdf`;
   doc.save(filename);
 }
