@@ -11,6 +11,7 @@ import { SipanganLogo } from "@/components/dashboard/SipanganLogo";
 import { ThemeToggle } from "@/components/dashboard/ThemeToggle";
 import { TrendChart } from "@/components/dashboard/TrendChart";
 import { exportDashboardToExcel, exportDashboardToPdf } from "@/lib/dashboard-exports";
+import { applyCityProfile, CITY_PROFILES, DEFAULT_CITY_KEY, getCityProfile, type CityKey } from "@/lib/city-data";
 import {
   buildSnapshotItems,
   formatSnapshotDate,
@@ -20,22 +21,30 @@ import {
 } from "@/lib/dashboard-utils";
 import { stapleItems } from "@/lib/staple-data";
 import { applyTheme, resolveTheme, setTheme, type AppTheme } from "@/lib/theme";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   component: DashboardPage,
   head: () => ({
     meta: [
-      { title: "Dashboard Harga Bahan Pokok · SIPANGAN" },
+      { title: "RAKAN UMKM - Smart Price Monitoring Lhokseumawe" },
       {
         name: "description",
         content:
-          "Sistem pemantauan harga bahan pokok harian dengan analisis volatilitas dan laporan inflasi.",
+          "Platform intelijen harga pangan dan rantai pasok terintegrasi untuk 6,800+ UMKM di Kota Lhokseumawe.",
+      },
+      { property: "og:title", content: "RAKAN UMKM Dashboard" },
+      { property: "og:site_name", content: "RAKAN UMKM" },
+      {
+        property: "og:description",
+        content:
+          "Platform intelijen harga pangan dan rantai pasok terintegrasi untuk 6,800+ UMKM di Kota Lhokseumawe.",
       },
     ],
   }),
 });
 
-const featuredIds = ["beras-premium", "gula-pasir", "minyak-goreng", "telur-ayam"];
+const featuredIds = ["cabai-merah", "beras-premium", "gula-pasir", "telur-ayam"];
 
 function DashboardPage() {
   const availableDates = useMemo(() => getAvailableSnapshotDates(), []);
@@ -46,6 +55,7 @@ function DashboardPage() {
   const [loading, setLoading] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [themeMode, setThemeMode] = useState<AppTheme>("light");
+  const [cityKey, setCityKey] = useState<CityKey>(DEFAULT_CITY_KEY);
 
   useEffect(() => {
     const initialTheme = resolveTheme();
@@ -58,10 +68,12 @@ function DashboardPage() {
     [availableDates, selectedDate],
   );
 
-  const snapshotItems = useMemo(
-    () => buildSnapshotItems(baseItems, snapshotIndex),
-    [baseItems, snapshotIndex],
-  );
+  const cityProfile = useMemo(() => getCityProfile(cityKey), [cityKey]);
+
+  const snapshotItems = useMemo(() => {
+    const cityItems = applyCityProfile(baseItems, cityProfile);
+    return buildSnapshotItems(cityItems, snapshotIndex);
+  }, [baseItems, cityProfile, snapshotIndex]);
 
   const featured = useMemo(
     () => featuredIds.map((id) => snapshotItems.find((item) => item.id === id)!).filter(Boolean),
@@ -194,6 +206,38 @@ function DashboardPage() {
       </div>
 
       <main className="mx-auto max-w-[1400px] space-y-6 px-4 py-6 sm:px-6">
+        <section className="dashboard-section rounded-md border border-border bg-card px-4 py-3">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">City Selector</p>
+              <h2 className="mt-1 text-sm font-bold text-foreground">{cityProfile.badge}</h2>
+              <p className="mt-1 text-xs text-muted-foreground">{cityProfile.note}</p>
+            </div>
+            <div className="flex w-full gap-1 overflow-x-auto rounded-md bg-muted p-1 lg:w-auto">
+              {CITY_PROFILES.map((city) => (
+                <button
+                  key={city.key}
+                  type="button"
+                  onClick={() => setCityKey(city.key)}
+                  className={cn(
+                    "shrink-0 rounded-sm px-3 py-2 text-xs font-semibold transition-colors",
+                    city.key === cityKey
+                      ? "bg-card text-navy shadow-sm"
+                      : "text-muted-foreground hover:bg-card/60 hover:text-foreground",
+                  )}
+                >
+                  {city.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="mt-3 grid gap-2 border-t border-border pt-3 sm:grid-cols-3">
+            <CityStat label="UMKM Terpantau" value={cityProfile.umkm} />
+            <CityStat label="Inflasi" value={cityProfile.inflation} />
+            <CityStat label="Sumber" value="BPS Aceh & Open Data Bapanas" />
+          </div>
+        </section>
+
         <section className="dashboard-section">
           <SectionHeader label="Ringkasan Eksekutif" sub="4 Komoditas Utama Terpantau" />
           <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
@@ -253,6 +297,15 @@ function SectionHeader({ label, sub }: { label: string; sub?: string }) {
     <div className="mb-3 flex items-baseline justify-between gap-3 border-b border-border pb-2">
       <h2 className="text-sm font-bold uppercase tracking-wider text-navy dark:text-foreground">{label}</h2>
       {sub && <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{sub}</span>}
+    </div>
+  );
+}
+
+function CityStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-sm bg-muted/60 px-3 py-2">
+      <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{label}</p>
+      <p className="mt-1 font-tabular text-sm font-bold text-navy">{value}</p>
     </div>
   );
 }

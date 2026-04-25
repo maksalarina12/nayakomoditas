@@ -20,6 +20,18 @@ interface RegionInsight {
 
 const REGION_DB: RegionInsight[] = [
   {
+    region: "Lhokseumawe",
+    province: "Aceh",
+    hotCommodity: "Cabai Merah Keriting",
+    trendNote: "berada di Rp 45.000/kg dengan inflasi lokal terpantau 6,69%",
+    recommendation:
+      "Pantau pasokan dari Medan lebih awal, amankan stok cabai dan bumbu cepat jual sebelum gangguan distribusi berdampak ke kios UMKM.",
+    route: "Koridor Pasok Medan-Lhokseumawe",
+    riskLevel: "Tinggi",
+    confidence: 94.8,
+    nearbyMarkets: ["Pasar Inpres Lhokseumawe", "Pasar Pusong", "Pasar Batuphat", "Pasar Cunda"],
+  },
+  {
     region: "Banda Aceh",
     province: "Aceh",
     hotCommodity: "Cabai Merah Keriting",
@@ -118,16 +130,16 @@ const REGION_DB: RegionInsight[] = [
 ];
 
 const DEFAULT_REGION: RegionInsight = {
-  region: "Nasional",
-  province: "Indonesia",
-  hotCommodity: "Minyak Goreng Curah",
-  trendNote: "diperkirakan menipis dalam 4 hari ke depan di regional Jawa Barat",
+  region: "Lhokseumawe",
+  province: "Aceh",
+  hotCommodity: "Cabai Merah Keriting",
+  trendNote: "terpantau sensitif terhadap pasokan Medan dengan inflasi lokal 6,69%",
   recommendation:
-    "Aktifkan jalur distribusi cadangan (Sustainability Route B) dan berikan subsidi angkutan agar harga di tingkat konsumen tetap stabil di bawah Rp 17.000.",
-  route: "Sustainability Route B",
-  riskLevel: "Sedang",
-  confidence: 92.4,
-  nearbyMarkets: ["Pasar Induk Cipinang", "Pasar Kramat Jati", "Pasar Caringin", "Pasar Pabean"],
+    "Asisten Analitik UMKM Lhokseumawe merekomendasikan stok lebih awal untuk cabai, bawang, dan minyak goreng saat arus barang Medan melambat.",
+  route: "Koridor Pasok Medan-Lhokseumawe",
+  riskLevel: "Tinggi",
+  confidence: 94.8,
+  nearbyMarkets: ["Pasar Inpres Lhokseumawe", "Pasar Pusong", "Pasar Batuphat", "Pasar Cunda"],
 };
 
 const LOADING_MESSAGES = [
@@ -140,6 +152,17 @@ const LOADING_MESSAGES = [
 function findRegion(query: string): RegionInsight {
   const q = query.trim().toLowerCase();
   if (!q) return DEFAULT_REGION;
+  if (q.includes("kenapa harga naik") || q.includes("medan")) {
+    return {
+      ...DEFAULT_REGION,
+      region: q.includes("medan") ? "Medan → Lhokseumawe" : "Lhokseumawe",
+      trendNote:
+        "mengalami lonjakan karena gangguan pasokan dari Medan, terutama pada cabai dan bumbu dapur yang bergerak cepat",
+      recommendation:
+        "UMKM disarankan mengamankan stok lebih awal, membagi pembelian ke beberapa pemasok, dan menaikkan buffer stok 2-3 hari sebelum distribusi Medan kembali normal.",
+      riskLevel: "Tinggi",
+    };
+  }
   const exact = REGION_DB.find(
     (r) => r.region.toLowerCase() === q || r.province.toLowerCase() === q,
   );
@@ -157,7 +180,7 @@ function findRegion(query: string): RegionInsight {
 }
 
 function buildResponse(insight: RegionInsight): string {
-  return `Analisis AI untuk ${insight.region} (${insight.province}): Komoditas paling diawasi adalah ${insight.hotCommodity}, ${insight.trendNote}. Rekomendasi Tindakan: ${insight.recommendation} Pasar prioritas pemantauan: ${insight.nearbyMarkets.slice(0, 3).join(", ")}.`;
+  return `Rakan AI sebagai Asisten Analitik UMKM Lhokseumawe membaca ${insight.region} (${insight.province}): komoditas paling diawasi adalah ${insight.hotCommodity}, ${insight.trendNote}. Rekomendasi untuk UMKM: ${insight.recommendation} Pasar prioritas pemantauan: ${insight.nearbyMarkets.slice(0, 3).join(", ")}.`;
 }
 
 export function AIInsightCard() {
@@ -224,7 +247,7 @@ export function AIInsightCard() {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(buildResponse(activeInsight));
     setCopied(true);
-    toast.success("Insight AI disalin ke clipboard");
+    toast.success("Insight Rakan AI disalin ke clipboard");
     setTimeout(() => setCopied(false), 1800);
   };
 
@@ -262,10 +285,10 @@ export function AIInsightCard() {
             </div>
             <div>
               <h2 className="text-sm font-bold uppercase tracking-wider text-navy">
-                SIPANGAN AI · Predictive Market Analysis
+                Rakan AI · Asisten Analitik UMKM Lhokseumawe
               </h2>
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                Powered by Sustainability Engine v2.1 · Regional Mode
+                Food Inflation · Market Prices · Supply Chain Medan
               </p>
             </div>
           </div>
@@ -280,7 +303,7 @@ export function AIInsightCard() {
           <div className="space-y-2">
             <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
               <MapPin className="h-3 w-3" />
-              Tanyakan AI berdasarkan lokasi
+              Tanya Rakan AI
             </label>
             <form
               onSubmit={(e) => {
@@ -294,7 +317,7 @@ export function AIInsightCard() {
                 <Input
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  placeholder="Contoh: Banda Aceh, Surabaya, Jawa Barat..."
+                  placeholder="Contoh: Kenapa harga naik? Medan, Banda Aceh..."
                   className="h-10 pl-8 text-sm"
                   disabled={phase === "loading" || phase === "typing"}
                 />
@@ -309,7 +332,7 @@ export function AIInsightCard() {
                 ) : (
                   <Sparkles className="h-4 w-4" />
                 )}
-                {phase === "idle" || phase === "done" ? "Generate Insight" : "Menganalisis..."}
+                {phase === "idle" || phase === "done" ? "Tanya Rakan AI" : "Menganalisis..."}
               </Button>
             </form>
 
@@ -318,7 +341,7 @@ export function AIInsightCard() {
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Cepat:
               </span>
-              {["Banda Aceh", "Jakarta", "Bandung", "Surabaya", "Makassar", "Denpasar"].map((r) => (
+              {["Lhokseumawe", "Medan", "Banda Aceh", "Jakarta", "Bandung", "Kenapa harga naik?"].map((r) => (
                 <button
                   key={r}
                   type="button"
@@ -334,9 +357,7 @@ export function AIInsightCard() {
 
           {phase === "idle" && (
             <p className="rounded-md border border-dashed border-border bg-muted/30 px-4 py-4 text-sm text-muted-foreground">
-              Masukkan nama kota/provinsi di atas, atau klik chip cepat. AI akan
-              menganalisis komoditas paling fluktuatif & memberikan rekomendasi
-              jalur distribusi spesifik untuk wilayah tersebut.
+              Halo! Saya Rakan AI, asisten pintar untuk RAKAN UMKM. Saya memantau data inflasi 6.69% dan harga Bapanas hari ini. Ada komoditas yang ingin dicek harganya?
             </p>
           )}
 
@@ -345,7 +366,7 @@ export function AIInsightCard() {
               <Loader2 className="h-5 w-5 animate-spin text-ai" />
               <div>
                 <p className="text-sm font-semibold text-foreground">
-                  AI sedang menganalisis {activeInsight.region}...
+                  Rakan AI sedang menganalisis {activeInsight.region}...
                 </p>
                 <p className="font-tabular text-[11px] uppercase tracking-wider text-muted-foreground">
                   {LOADING_MESSAGES[loadingMsgIdx]}
@@ -361,7 +382,7 @@ export function AIInsightCard() {
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-3.5 w-3.5 text-ai" />
                     <span className="text-[10px] font-bold uppercase tracking-wider text-ai">
-                      Hasil Analisis AI
+                      Hasil Analisis Rakan AI
                     </span>
                   </div>
                   <span className="inline-flex items-center gap-1 rounded-sm bg-navy/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-navy">

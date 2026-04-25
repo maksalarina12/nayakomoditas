@@ -53,7 +53,7 @@ export function exportDashboardToExcel(items: StapleItem[], date: Date) {
 
   // Build sheet starting with a small report header band on rows 1-3
   const worksheet = XLSX.utils.aoa_to_sheet([
-    ["SIPANGAN — Laporan Harian Harga Bahan Pokok"],
+    ["RAKAN UMKM - Laporan Monitoring Harga"],
     [`Snapshot Tanggal: ${dateLabel}`],
     [`Total Komoditas: ${items.length}`],
     [],
@@ -88,14 +88,14 @@ export function exportDashboardToExcel(items: StapleItem[], date: Date) {
 
   const workbook = XLSX.utils.book_new();
   workbook.Props = {
-    Title: "SIPANGAN — Harga Bahan Pokok",
+    Title: "RAKAN UMKM - Laporan Monitoring Harga",
     Subject: `Snapshot ${dateLabel}`,
-    Author: "Sistem Informasi Pangan Nasional",
+    Author: "RAKAN UMKM",
     CreatedDate: new Date(),
   };
   XLSX.utils.book_append_sheet(workbook, worksheet, "Harga Bahan Pokok");
 
-  const filename = `SIPANGAN_Harga_${dateShort.replace(/\s/g, "_")}.xlsx`;
+  const filename = "Data_Harga_RAKAN_UMKM.xlsx";
   XLSX.writeFile(workbook, filename);
 }
 
@@ -111,10 +111,10 @@ export function exportDashboardToPdf(items: StapleItem[], date: Date) {
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
-  doc.text("SIPANGAN — Sistem Informasi Pangan Nasional", 40, 32);
+  doc.text("RAKAN UMKM - Laporan Monitoring Harga", 40, 32);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
-  doc.text("Direktorat Stabilitas Harga Pokok · Republik Indonesia", 40, 50);
+  doc.text("Smart Price Monitoring Lhokseumawe · BPS Aceh & Open Data Bapanas", 40, 50);
 
   // Date pill on the right
   doc.setFillColor(30, 41, 59);
@@ -127,7 +127,7 @@ export function exportDashboardToPdf(items: StapleItem[], date: Date) {
   doc.setTextColor(40, 40, 40);
   doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
-  doc.text("Laporan Harian Harga Bahan Pokok", 40, 100);
+  doc.text("RAKAN UMKM - Laporan Monitoring Harga", 40, 100);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
   doc.text(`Snapshot Tanggal: ${dateLabel}`, 40, 116);
@@ -177,11 +177,11 @@ export function exportDashboardToPdf(items: StapleItem[], date: Date) {
   doc.setFontSize(8);
   doc.setTextColor(120, 120, 120);
   doc.text(
-    "Sumber: PIHPS Nasional · Bank Indonesia · Data merupakan rata-rata nasional dari 514 kota/kabupaten.",
+    "Sumber: BPS Aceh & Open Data Bapanas · Data mock stabil untuk monitoring UMKM.",
     40,
     finalY + 24,
   );
 
-  const filename = `SIPANGAN_Laporan_${dateShort.replace(/\s/g, "_")}.pdf`;
+  const filename = "Laporan_RAKAN_UMKM_Lhokseumawe.pdf";
   doc.save(filename);
 }
