@@ -30,15 +30,13 @@ export const Route = createFileRoute("/")({
       { title: "RAKAN UMKM - Smart Price Monitoring Lhokseumawe" },
       {
         name: "description",
-        content:
-          "Platform intelijen harga pangan dan rantai pasok terintegrasi untuk 6,800+ UMKM di Kota Lhokseumawe.",
+        content: "Platform intelijen harga pangan terintegrasi untuk UMKM Kota Lhokseumawe.",
       },
-      { property: "og:title", content: "RAKAN UMKM Dashboard" },
+      { property: "og:title", content: "RAKAN UMKM - Smart Price Monitoring Lhokseumawe" },
       { property: "og:site_name", content: "RAKAN UMKM" },
       {
         property: "og:description",
-        content:
-          "Platform intelijen harga pangan dan rantai pasok terintegrasi untuk 6,800+ UMKM di Kota Lhokseumawe.",
+        content: "Platform intelijen harga pangan terintegrasi untuk UMKM Kota Lhokseumawe.",
       },
     ],
   }),
@@ -232,9 +230,9 @@ function DashboardPage() {
             </div>
           </div>
           <div className="mt-3 grid gap-2 border-t border-border pt-3 sm:grid-cols-3">
-            <CityStat label="UMKM Terpantau" value={cityProfile.umkm} />
-            <CityStat label="Inflasi" value={cityProfile.inflation} />
-            <CityStat label="Sumber" value={cityProfile.source} />
+          <CityStat key={`umkm-${cityKey}`} label="UMKM Terpantau" value={cityProfile.umkm} />
+          <CityStat key={`inflasi-${cityKey}`} label="Inflasi" value={cityProfile.inflation} />
+          <CityStat key={`sumber-${cityKey}`} label="Sumber" value={cityProfile.source} />
           </div>
         </section>
 
