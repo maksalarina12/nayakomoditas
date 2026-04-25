@@ -21,6 +21,7 @@ import {
 } from "@/lib/dashboard-utils";
 import { stapleItems } from "@/lib/staple-data";
 import { applyTheme, resolveTheme, setTheme, type AppTheme } from "@/lib/theme";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   component: DashboardPage,
@@ -296,6 +297,15 @@ function SectionHeader({ label, sub }: { label: string; sub?: string }) {
     <div className="mb-3 flex items-baseline justify-between gap-3 border-b border-border pb-2">
       <h2 className="text-sm font-bold uppercase tracking-wider text-navy dark:text-foreground">{label}</h2>
       {sub && <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{sub}</span>}
+    </div>
+  );
+}
+
+function CityStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-sm bg-muted/60 px-3 py-2">
+      <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{label}</p>
+      <p className="mt-1 font-tabular text-sm font-bold text-navy">{value}</p>
     </div>
   );
 }
