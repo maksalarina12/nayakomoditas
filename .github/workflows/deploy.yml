@@ -30,7 +30,7 @@ jobs:
         env:
           # Hardcoded to match vite.config.ts. Change here AND in vite.config.ts
           # if you rename the repo (or set to "/" for a <username>.github.io repo).
-          VITE_BASE_PATH: /nayakomoditas/
+          VITE_BASE_PATH: /rakanumkm/
         run: bun run build
 
       - name: Prepare ./dist for GitHub Pages
