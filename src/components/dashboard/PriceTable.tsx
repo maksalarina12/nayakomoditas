@@ -11,7 +11,7 @@ interface Props {
 export function PriceTable({ items, selectedId, onSelect }: Props) {
   return (
     <div className="overflow-hidden rounded-md border border-border bg-card">
-      <div className="flex items-center justify-between border-b border-border bg-slate-header px-5 py-3">
+      <div className="flex items-center justify-between border-b border-border bg-slate-header px-4 py-3 sm:px-5">
         <div>
           <h2 className="text-sm font-bold uppercase tracking-wider text-navy">
             Tabel Harga Komoditas
@@ -25,8 +25,8 @@ export function PriceTable({ items, selectedId, onSelect }: Props) {
         </span>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto overscroll-x-contain">
+        <table className="min-w-[760px] w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-slate-header/50 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
               <th className="px-5 py-3 text-left">Nama Barang</th>
