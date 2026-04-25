@@ -33,24 +33,21 @@ export const Route = createRootRoute({
       { title: "RAKAN UMKM - Smart Price Monitoring Lhokseumawe" },
       {
         name: "description",
-        content:
-          "Platform intelijen harga pangan dan rantai pasok terintegrasi untuk 6,800+ UMKM di Kota Lhokseumawe.",
+        content: "Platform intelijen harga pangan terintegrasi untuk UMKM Kota Lhokseumawe.",
       },
       { name: "author", content: "RAKAN UMKM" },
-      { property: "og:title", content: "RAKAN UMKM Dashboard" },
+      { property: "og:title", content: "RAKAN UMKM - Smart Price Monitoring Lhokseumawe" },
       { property: "og:site_name", content: "RAKAN UMKM" },
       {
         property: "og:description",
-        content:
-          "Platform intelijen harga pangan dan rantai pasok terintegrasi untuk 6,800+ UMKM di Kota Lhokseumawe.",
+        content: "Platform intelijen harga pangan terintegrasi untuk UMKM Kota Lhokseumawe.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "RAKAN UMKM Dashboard" },
+      { name: "twitter:title", content: "RAKAN UMKM - Smart Price Monitoring Lhokseumawe" },
       {
         name: "twitter:description",
-        content:
-          "Platform intelijen harga pangan dan rantai pasok terintegrasi untuk 6,800+ UMKM di Kota Lhokseumawe.",
+        content: "Platform intelijen harga pangan terintegrasi untuk UMKM Kota Lhokseumawe.",
       },
     ],
     links: [
