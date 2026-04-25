@@ -43,7 +43,7 @@ function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => vo
             Try again
           </button>
           <a
-            href="/"
+            href="/rakanumkm/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
             Go home
@@ -54,11 +54,9 @@ function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => vo
   );
 }
 
-// Match the Vite `base` so client-side links resolve under /nayakomoditas/ on
-// GitHub Pages. Strip trailing slash because TanStack Router expects a basepath
-// like "/nayakomoditas" (no trailing "/").
-const RAW_BASE = import.meta.env.BASE_URL ?? "/";
-const BASEPATH = RAW_BASE.replace(/\/$/, "") || "/";
+// Fixed BASEPATH for GitHub Pages deployment on /rakanumkm/
+// TanStack Router expects a basepath like "/rakanumkm" (no trailing "/").
+const BASEPATH = "/rakanumkm";
 
 export const getRouter = () => {
   const router = createRouter({
