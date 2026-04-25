@@ -176,7 +176,7 @@ function DashboardPage() {
 
       <div className="border-b border-border bg-card/95 backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1400px] flex-col gap-4 px-4 py-4 sm:px-6 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
-          <div>
+          <div className="min-w-0">
             <p className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
               <Sparkles className="h-3.5 w-3.5 text-primary" /> Dashboard Eksekutif
             </p>
@@ -211,7 +211,7 @@ function DashboardPage() {
               <h2 className="mt-1 text-sm font-bold text-foreground">{cityProfile.badge}</h2>
               <p className="mt-1 text-xs text-muted-foreground">{cityProfile.note}</p>
             </div>
-            <div className="flex w-full gap-1 overflow-x-auto rounded-md bg-muted p-1 lg:w-auto">
+            <div className="flex w-full gap-1 overflow-x-auto overscroll-x-contain rounded-md bg-muted p-1 lg:w-auto">
               {CITY_PROFILES.map((city) => (
                 <button
                   key={city.key}
@@ -254,7 +254,7 @@ function DashboardPage() {
           <TrendChart item={selected} loading={loading} selectedDateLabel={selectedDateLabel} />
         </section>
 
-        <section className="dashboard-section grid gap-4 lg:grid-cols-3">
+        <section className="dashboard-section grid min-w-0 gap-4 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <AIInsightCard />
           </div>
@@ -292,7 +292,7 @@ function DashboardPage() {
 // FIXED: text-navy diubah jadi dark:text-foreground
 function SectionHeader({ label, sub }: { label: string; sub?: string }) {
   return (
-    <div className="mb-3 flex items-baseline justify-between gap-3 border-b border-border pb-2">
+    <div className="mb-3 flex flex-col gap-1 border-b border-border pb-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
       <h2 className="text-sm font-bold uppercase tracking-wider text-navy dark:text-foreground">{label}</h2>
       {sub && <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{sub}</span>}
     </div>
