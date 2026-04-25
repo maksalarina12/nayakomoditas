@@ -282,7 +282,7 @@ function DashboardPage() {
 
         <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-4 text-[11px] text-muted-foreground">
           <p>© 2026 RAKAN UMKM · Data harga merupakan data mock stabil untuk monitoring UMKM.</p>
-          <p className="font-tabular uppercase tracking-wider">Versi 4.2.1 · Audit Internal Lulus</p>
+          <p className="font-tabular uppercase tracking-wider">Versi 4.2.1 · RAKAN UMKM</p>
         </footer>
       </main>
     </div>
