@@ -179,8 +179,18 @@ function findRegion(query: string): RegionInsight {
   };
 }
 
-function buildResponse(insight: RegionInsight): string {
-  return `Rakan AI sebagai Asisten Analitik UMKM Lhokseumawe membaca ${insight.region} (${insight.province}): komoditas paling diawasi adalah ${insight.hotCommodity}, ${insight.trendNote}. Rekomendasi untuk UMKM: ${insight.recommendation} Pasar prioritas pemantauan: ${insight.nearbyMarkets.slice(0, 3).join(", ")}.`;
+const NATIONAL_MARKETS = [
+  "Pasar Induk Kramat Jati",
+  "Pasar Johar Semarang",
+  "Pasar Caringin Bandung",
+  "Pasar Terong Makassar",
+];
+
+const NATIONAL_ROUTE = "Koridor Pasok Lintas Provinsi";
+
+function buildResponse(query: string): string {
+  const term = query.trim() || "komoditas pangan strategis";
+  return `Rakan AI sebagai Asisten Analitik Nasional membaca tren untuk komoditas: ${term}. Fluktuasi pasokan untuk komoditas ini terpantau dinamis di sentra produksi utama. Rekomendasi: Rakan AI merekomendasikan penyesuaian stok cadangan (buffer stock) lebih awal untuk mengantisipasi volatilitas arus logistik antar provinsi. Pantau pergerakan harga di pasar induk prioritas.`;
 }
 
 export function AIInsightCard() {
