@@ -130,39 +130,28 @@ const REGION_DB: RegionInsight[] = [
 ];
 
 const DEFAULT_REGION: RegionInsight = {
-  region: "Lhokseumawe",
-  province: "Aceh",
-  hotCommodity: "Cabai Merah Keriting",
-  trendNote: "terpantau sensitif terhadap pasokan Medan dengan inflasi lokal 6,69%",
+  region: "Nasional",
+  province: "Indonesia",
+  hotCommodity: "Komoditas Pangan Strategis",
+  trendNote: "terpantau dinamis di sentra produksi utama dan pasar induk nasional",
   recommendation:
-    "Rakan AI sebagai analis UMKM merekomendasikan stok lebih awal untuk cabai, bawang, dan minyak goreng saat arus barang Medan ke Lhokseumawe melambat.",
-  route: "Koridor Pasok Medan-Lhokseumawe",
-  riskLevel: "Tinggi",
-  confidence: 94.8,
-  nearbyMarkets: ["Pasar Inpres Lhokseumawe", "Pasar Pusong", "Pasar Batuphat", "Pasar Cunda"],
+    "Rakan AI merekomendasikan penyesuaian stok cadangan (buffer stock) berdasarkan tren pasar induk nasional.",
+  route: "Koridor Pasok Lintas Provinsi",
+  riskLevel: "Sedang",
+  confidence: 93.5,
+  nearbyMarkets: ["Pasar Induk Kramat Jati", "Pasar Johar Semarang", "Pasar Caringin Bandung", "Pasar Terong Makassar"],
 };
 
 const LOADING_MESSAGES = [
   "Menghubungkan ke node AI Sustainability...",
-  "Menganalisis rantai pasok regional...",
+  "Menganalisis rantai pasok nasional...",
   "Mengkalkulasi proyeksi stok 7 hari...",
-  "Menyusun rekomendasi tindakan lokal...",
+  "Menyusun rekomendasi tindakan strategis...",
 ];
 
 function findRegion(query: string): RegionInsight {
   const q = query.trim().toLowerCase();
   if (!q) return DEFAULT_REGION;
-  if (q.includes("kenapa harga naik") || q.includes("medan")) {
-    return {
-      ...DEFAULT_REGION,
-      region: q.includes("medan") ? "Medan → Lhokseumawe" : "Lhokseumawe",
-      trendNote:
-        "mengalami lonjakan karena gangguan pasokan dari Medan, terutama pada cabai dan bumbu dapur yang bergerak cepat",
-      recommendation:
-        "UMKM disarankan mengamankan stok lebih awal, membagi pembelian ke beberapa pemasok, dan menaikkan buffer stok 2-3 hari sebelum distribusi Medan kembali normal.",
-      riskLevel: "Tinggi",
-    };
-  }
   const exact = REGION_DB.find(
     (r) => r.region.toLowerCase() === q || r.province.toLowerCase() === q,
   );
