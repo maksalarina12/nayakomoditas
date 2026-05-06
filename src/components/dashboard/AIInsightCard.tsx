@@ -190,7 +190,7 @@ const NATIONAL_ROUTE = "Koridor Pasok Lintas Provinsi";
 
 function buildResponse(query: string): string {
   const term = query.trim() || "komoditas pangan strategis";
-  return `Rakan AI sebagai Asisten Analitik Nasional membaca tren untuk komoditas: ${term}. Fluktuasi pasokan untuk komoditas ini terpantau dinamis di sentra produksi utama. Rekomendasi: Rakan AI merekomendasikan penyesuaian stok cadangan (buffer stock) lebih awal untuk mengantisipasi volatilitas arus logistik antar provinsi. Pantau pergerakan harga di pasar induk prioritas.`;
+  return `Rakan AI memantau tren harga untuk komoditas: ${term}. Fluktuasi pasokan dan harga merujuk pada data pusat Nasional. Rekomendasi: Sesuaikan stok berdasarkan tren pasar induk nasional.`;
 }
 
 export function AIInsightCard() {
