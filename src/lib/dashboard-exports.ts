@@ -64,7 +64,7 @@ export function exportDashboardToExcel(items: StapleItem[], date: Date, city: Ci
 
   // Build sheet starting with a small report header band on rows 1-3
   const worksheet = XLSX.utils.aoa_to_sheet([
-    ["RAKAN UMKM - Laporan Monitoring Harga"],
+    ["RAKAN AI - Laporan Monitoring Harga"],
     [`Lokasi: ${cityLabel}`],
     [`Tanggal: ${dateLabel}`],
     [`Sumber: ${city.source}`],
@@ -103,9 +103,9 @@ export function exportDashboardToExcel(items: StapleItem[], date: Date, city: Ci
 
   const workbook = XLSX.utils.book_new();
   workbook.Props = {
-    Title: "RAKAN UMKM - Laporan Monitoring Harga",
+    Title: "RAKAN AI - Laporan Monitoring Harga",
     Subject: `${cityLabel} · Snapshot ${dateLabel}`,
-    Author: "RAKAN UMKM",
+    Author: "RAKAN AI",
     CreatedDate: new Date(),
   };
   XLSX.utils.book_append_sheet(workbook, worksheet, "Harga Bahan Pokok");
@@ -128,7 +128,7 @@ export function exportDashboardToPdf(items: StapleItem[], date: Date, city: City
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
-  doc.text("RAKAN UMKM - Laporan Monitoring Harga", 40, 32);
+  doc.text("RAKAN AI - Laporan Monitoring Harga", 40, 32);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
   doc.text(`${cityLabel} · ${city.source}`, 40, 50);
@@ -144,7 +144,7 @@ export function exportDashboardToPdf(items: StapleItem[], date: Date, city: City
   doc.setTextColor(40, 40, 40);
   doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
-  doc.text("RAKAN UMKM - Laporan Monitoring Harga", 40, 100);
+  doc.text("RAKAN AI - Laporan Monitoring Harga", 40, 100);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
   doc.text(`Lokasi: ${cityLabel}`, 40, 116);
@@ -196,7 +196,7 @@ export function exportDashboardToPdf(items: StapleItem[], date: Date, city: City
   doc.setFontSize(8);
   doc.setTextColor(120, 120, 120);
   doc.text(
-    `Sumber: ${city.source} · Data mock stabil untuk monitoring UMKM.`,
+    `Sumber: ${city.source} · Data mock stabil untuk monitoring Nasional.`,
     40,
     finalY + 24,
   );
