@@ -80,7 +80,7 @@ export function SipanganLogo({ compact = false, onDark = false }: Props) {
             onDark ? "text-navy-foreground/70" : "text-muted-foreground",
           )}
         >
-          Smart Price Monitoring Lhokseumawe
+          Smart Price Monitoring Nasional
         </p>
       </div>
     </div>
