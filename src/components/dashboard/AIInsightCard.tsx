@@ -179,8 +179,18 @@ function findRegion(query: string): RegionInsight {
   };
 }
 
-function buildResponse(insight: RegionInsight): string {
-  return `Rakan AI sebagai Asisten Analitik UMKM Lhokseumawe membaca ${insight.region} (${insight.province}): komoditas paling diawasi adalah ${insight.hotCommodity}, ${insight.trendNote}. Rekomendasi untuk UMKM: ${insight.recommendation} Pasar prioritas pemantauan: ${insight.nearbyMarkets.slice(0, 3).join(", ")}.`;
+const NATIONAL_MARKETS = [
+  "Pasar Induk Kramat Jati",
+  "Pasar Johar Semarang",
+  "Pasar Caringin Bandung",
+  "Pasar Terong Makassar",
+];
+
+const NATIONAL_ROUTE = "Koridor Pasok Lintas Provinsi";
+
+function buildResponse(query: string): string {
+  const term = query.trim() || "komoditas pangan strategis";
+  return `Rakan AI sebagai Asisten Analitik Nasional membaca tren untuk komoditas: ${term}. Fluktuasi pasokan untuk komoditas ini terpantau dinamis di sentra produksi utama. Rekomendasi: Rakan AI merekomendasikan penyesuaian stok cadangan (buffer stock) lebih awal untuk mengantisipasi volatilitas arus logistik antar provinsi. Pantau pergerakan harga di pasar induk prioritas.`;
 }
 
 export function AIInsightCard() {
@@ -206,15 +216,18 @@ export function AIInsightCard() {
     return () => clearInterval(interval);
   }, [phase]);
 
-  const runAnalysis = (insight: RegionInsight) => {
+  const [activeQuery, setActiveQuery] = useState("");
+
+  const runAnalysis = (insight: RegionInsight, query: string) => {
     timeoutsRef.current.forEach(clearTimeout);
     timeoutsRef.current = [];
     setActiveInsight(insight);
+    setActiveQuery(query);
     setTyped("");
     setLoadingMsgIdx(0);
     setPhase("loading");
 
-    const response = buildResponse(insight);
+    const response = buildResponse(query);
     const t1 = setTimeout(() => {
       setPhase("typing");
       let i = 0;
@@ -235,17 +248,17 @@ export function AIInsightCard() {
 
   const handleGenerate = () => {
     if (phase === "loading" || phase === "typing") return;
-    runAnalysis(findRegion(location));
+    runAnalysis(findRegion(location), location);
   };
 
   const handleQuickRegion = (name: string) => {
     if (phase === "loading" || phase === "typing") return;
     setLocation(name);
-    runAnalysis(findRegion(name));
+    runAnalysis(findRegion(name), name);
   };
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(buildResponse(activeInsight));
+    await navigator.clipboard.writeText(buildResponse(activeQuery));
     setCopied(true);
     toast.success("Insight Rakan AI disalin ke clipboard");
     setTimeout(() => setCopied(false), 1800);
@@ -285,10 +298,10 @@ export function AIInsightCard() {
             </div>
             <div className="min-w-0">
               <h2 className="text-sm font-bold uppercase tracking-wider text-navy">
-                Rakan AI · Asisten Analitik UMKM Lhokseumawe
+                Rakan AI
               </h2>
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                Food Inflation · Market Prices · Supply Chain Medan
+                Food Inflation · Market Prices · National Supply Chain
               </p>
             </div>
           </div>
@@ -409,7 +422,7 @@ export function AIInsightCard() {
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-1.5">
-                      {activeInsight.nearbyMarkets.map((m) => (
+                      {NATIONAL_MARKETS.map((m) => (
                         <span
                           key={m}
                           className="inline-flex items-center gap-1 rounded-sm border border-success/30 bg-success-soft px-2 py-0.5 text-[11px] font-medium text-success"
@@ -427,7 +440,7 @@ export function AIInsightCard() {
                         Confidence: {activeInsight.confidence.toFixed(1)}%
                       </span>
                       <span className="rounded-sm bg-success-soft px-2 py-1 text-success">
-                        {activeInsight.route}
+                        {NATIONAL_ROUTE}
                       </span>
                       <span className={`rounded-sm px-2 py-1 ${riskColor}`}>
                         Risk: {activeInsight.riskLevel}
