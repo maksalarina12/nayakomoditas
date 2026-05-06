@@ -172,14 +172,50 @@ const NATIONAL_MARKETS = [
   "Pasar Induk Kramat Jati",
   "Pasar Johar Semarang",
   "Pasar Caringin Bandung",
-  "Pasar Terong Makassar",
 ];
+
+const LHOKSEUMAWE_MARKETS = ["Pasar Inpres Lhokseumawe", "Pasar Pusong"];
 
 const NATIONAL_ROUTE = "Koridor Pasok Lintas Provinsi";
 
+const GENERAL_QUESTION_KEYWORDS = ["kenapa", "mengapa", "kapan", "bagaimana", "apa "];
+
+function isLhokseumaweQuery(q: string) {
+  return q.trim().toLowerCase().includes("lhokseumawe");
+}
+
+function isGeneralQuestion(q: string) {
+  const lower = q.trim().toLowerCase();
+  if (!lower) return false;
+  return GENERAL_QUESTION_KEYWORDS.some((k) => lower.includes(k)) || lower.includes("?");
+}
+
+function extractCommodity(q: string) {
+  const cleaned = q
+    .replace(/lhokseumawe/gi, "")
+    .replace(/[?.,!]/g, "")
+    .trim();
+  return cleaned || "komoditas pangan strategis";
+}
+
+function mockPrice(term: string) {
+  let hash = 0;
+  for (let i = 0; i < term.length; i++) hash = (hash * 31 + term.charCodeAt(i)) | 0;
+  const base = 20000 + (Math.abs(hash) % 50) * 1000; // 20.000 - 69.000
+  return base.toLocaleString("id-ID");
+}
+
 function buildResponse(query: string): string {
-  const term = query.trim() || "komoditas pangan strategis";
-  return `Rakan AI memantau tren harga untuk komoditas: ${term}. Fluktuasi pasokan dan harga merujuk pada data pusat Nasional. Rekomendasi: Sesuaikan stok berdasarkan tren pasar induk nasional.`;
+  const raw = query.trim();
+  if (isGeneralQuestion(raw)) {
+    return "Fluktuasi harga umumnya dipengaruhi oleh rantai pasok lintas provinsi dan dinamika cuaca di sentra produksi. Disarankan memantau data pusat.";
+  }
+  const commodity = extractCommodity(raw || "komoditas pangan strategis");
+  const price = mockPrice(commodity);
+  if (isLhokseumaweQuery(raw)) {
+    return `Untuk harga per hari ini di Lhokseumawe, harga ${commodity} berada di kisaran **Rp ${price}/kg**. Rekomendasi: Pantau pasokan di area lokal.`;
+  }
+  return `Untuk harga per hari ini secara Nasional, rata-rata harga ${commodity} berada di kisaran **Rp ${price}/kg**. Fluktuasi pasokan merujuk pada data pusat Nasional. Rekomendasi: Sesuaikan stok berdasarkan tren pasar induk nasional.`;
 }
 
 export function AIInsightCard() {
@@ -359,7 +395,7 @@ export function AIInsightCard() {
 
           {phase === "idle" && (
             <p className="rounded-md border border-dashed border-border bg-muted/30 px-4 py-4 text-sm text-muted-foreground">
-              Halo! Saya Rakan AI, asisten pintar RAKAN UMKM. Ada data harga atau tren inflasi yang ingin Anda cek hari ini?
+              Halo! Saya Rakan AI, asisten pintar RAKAN AI. Ada data harga atau tren inflasi yang ingin Anda cek hari ini?
             </p>
           )}
 
@@ -411,7 +447,7 @@ export function AIInsightCard() {
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-1.5">
-                      {NATIONAL_MARKETS.map((m) => (
+                      {(isLhokseumaweQuery(activeQuery) ? LHOKSEUMAWE_MARKETS : NATIONAL_MARKETS).map((m) => (
                         <span
                           key={m}
                           className="inline-flex items-center gap-1 rounded-sm border border-success/30 bg-success-soft px-2 py-0.5 text-[11px] font-medium text-success"

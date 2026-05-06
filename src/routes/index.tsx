@@ -281,8 +281,8 @@ function DashboardPage() {
         </section>
 
         <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-4 text-[11px] text-muted-foreground">
-          <p>© 2026 RAKAN UMKM · Data harga merupakan data mock stabil untuk monitoring UMKM.</p>
-          <p className="font-tabular uppercase tracking-wider">Versi 4.2.1 · RAKAN UMKM</p>
+          <p>© 2026 RAKAN AI · Data harga merupakan data mock stabil untuk monitoring Nasional.</p>
+          <p className="font-tabular uppercase tracking-wider">VERSI 4.2.1 · RAKAN AI</p>
         </footer>
       </main>
     </div>
