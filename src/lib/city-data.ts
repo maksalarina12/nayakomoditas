@@ -69,7 +69,7 @@ export const CITY_PROFILES: CityProfile[] = [
 export const DEFAULT_CITY_KEY: CityKey = "jakarta";
 
 export function getCityProfile(key: CityKey) {
-  return CITY_PROFILES.find((city) => city.key === key) ?? CITY_PROFILES[4];
+  return CITY_PROFILES.find((city) => city.key === key) ?? CITY_PROFILES[0];
 }
 
 export function applyCityProfile(items: StapleItem[], city: CityProfile): StapleItem[] {
