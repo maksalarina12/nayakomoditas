@@ -20,16 +20,16 @@ interface RegionInsight {
 
 const REGION_DB: RegionInsight[] = [
   {
-    region: "Lhokseumawe",
-    province: "Aceh",
-    hotCommodity: "Cabai Merah Keriting",
-    trendNote: "berada di Rp 45.000/kg dengan inflasi lokal terpantau 6,69%",
+    region: "Jakarta",
+    province: "DKI Jakarta",
+    hotCommodity: "Beras Premium",
+    trendNote: "naik 2,8% karena peningkatan permintaan ritel modern menjelang akhir bulan",
     recommendation:
-      "Pantau pasokan dari Medan lebih awal, amankan stok cabai dan bumbu cepat jual sebelum gangguan distribusi berdampak ke kios UMKM.",
-    route: "Koridor Pasok Medan-Lhokseumawe",
-    riskLevel: "Tinggi",
-    confidence: 94.8,
-    nearbyMarkets: ["Pasar Inpres Lhokseumawe", "Pasar Pusong", "Pasar Batuphat", "Pasar Cunda"],
+      "Lakukan operasi pasar Bulog di pasar induk dengan harga HET Rp 13.900/kg, prioritaskan Cipinang & Kramat Jati.",
+    route: "Koridor Pasok Lintas Provinsi",
+    riskLevel: "Sedang",
+    confidence: 93.7,
+    nearbyMarkets: ["Pasar Induk Kramat Jati", "Pasar Johar Semarang", "Pasar Caringin Bandung", "Pasar Terong Makassar"],
   },
   {
     region: "Banda Aceh",
