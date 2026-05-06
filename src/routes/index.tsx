@@ -230,7 +230,7 @@ function DashboardPage() {
             </div>
           </div>
           <div className="mt-3 grid gap-2 border-t border-border pt-3 sm:grid-cols-3">
-          <CityStat key={`umkm-${cityKey}`} label="UMKM Terpantau" value={cityProfile.umkm} />
+          <CityStat key={`umkm-${cityKey}`} label="Cakupan Pemantauan" value={cityProfile.umkm} />
           <CityStat key={`inflasi-${cityKey}`} label="Inflasi" value={cityProfile.inflation} />
           <CityStat key={`sumber-${cityKey}`} label="Sumber" value={cityProfile.source} />
           </div>
