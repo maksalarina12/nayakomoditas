@@ -298,10 +298,10 @@ export function AIInsightCard() {
             </div>
             <div className="min-w-0">
               <h2 className="text-sm font-bold uppercase tracking-wider text-navy">
-                Rakan AI · Asisten Analitik UMKM Lhokseumawe
+                Rakan AI
               </h2>
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                Food Inflation · Market Prices · Supply Chain Medan
+                Food Inflation · Market Prices · National Supply Chain
               </p>
             </div>
           </div>
