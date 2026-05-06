@@ -422,7 +422,7 @@ export function AIInsightCard() {
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-1.5">
-                      {activeInsight.nearbyMarkets.map((m) => (
+                      {NATIONAL_MARKETS.map((m) => (
                         <span
                           key={m}
                           className="inline-flex items-center gap-1 rounded-sm border border-success/30 bg-success-soft px-2 py-0.5 text-[11px] font-medium text-success"
@@ -440,7 +440,7 @@ export function AIInsightCard() {
                         Confidence: {activeInsight.confidence.toFixed(1)}%
                       </span>
                       <span className="rounded-sm bg-success-soft px-2 py-1 text-success">
-                        {activeInsight.route}
+                        {NATIONAL_ROUTE}
                       </span>
                       <span className={`rounded-sm px-2 py-1 ${riskColor}`}>
                         Risk: {activeInsight.riskLevel}
