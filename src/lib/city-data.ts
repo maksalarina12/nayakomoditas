@@ -1,6 +1,6 @@
 import { type StapleItem } from "./staple-data";
 
-export type CityKey = "jakarta" | "bandung" | "medan" | "banda-aceh" | "lhokseumawe";
+export type CityKey = "jakarta" | "bandung" | "medan" | "banda-aceh";
 
 export interface CityProfile {
   key: CityKey;
