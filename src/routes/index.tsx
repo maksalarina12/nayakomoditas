@@ -27,16 +27,16 @@ export const Route = createFileRoute("/")({
   component: DashboardPage,
   head: () => ({
     meta: [
-      { title: "RAKAN UMKM - Smart Price Monitoring Lhokseumawe" },
+      { title: "RAKAN AI - Smart Price Monitoring Nasional" },
       {
         name: "description",
-        content: "Platform intelijen harga pangan terintegrasi untuk UMKM Kota Lhokseumawe.",
+        content: "Platform intelijen harga pangan terintegrasi skala nasional.",
       },
-      { property: "og:title", content: "RAKAN UMKM - Smart Price Monitoring Lhokseumawe" },
-      { property: "og:site_name", content: "RAKAN UMKM" },
+      { property: "og:title", content: "RAKAN AI - Smart Price Monitoring Nasional" },
+      { property: "og:site_name", content: "RAKAN AI" },
       {
         property: "og:description",
-        content: "Platform intelijen harga pangan terintegrasi untuk UMKM Kota Lhokseumawe.",
+        content: "Platform intelijen harga pangan terintegrasi skala nasional.",
       },
     ],
   }),

@@ -1,6 +1,6 @@
 import { type StapleItem } from "./staple-data";
 
-export type CityKey = "jakarta" | "bandung" | "medan" | "banda-aceh" | "lhokseumawe";
+export type CityKey = "jakarta" | "bandung" | "medan" | "banda-aceh";
 
 export interface CityProfile {
   key: CityKey;
@@ -60,28 +60,16 @@ export const CITY_PROFILES: CityProfile[] = [
     inflation: "3.21%",
     source: "BPS Provinsi Aceh & Open Data Bapanas",
     badge: "Benchmark Provinsi Aceh",
-    note: "Pembanding provinsi untuk membaca deviasi harga Lhokseumawe.",
+    note: "Pembanding provinsi untuk membaca deviasi harga regional Aceh.",
     multipliers: { "cabai-merah": 0.92, "cabai-rawit": 0.9, "beras-premium": 0.99 },
     overrides: {},
   },
-  {
-    key: "lhokseumawe",
-    label: "Lhokseumawe (Aceh)",
-    shortLabel: "Lhokseumawe",
-    umkm: "6,800+ UMKM",
-    inflation: "6.69%",
-    source: "BPS Provinsi Aceh & Open Data Bapanas",
-    badge: "Fokus RAKAN UMKM",
-    note: "Harga lokal prioritas untuk pemantauan UMKM Kota Lhokseumawe.",
-    multipliers: { "cabai-rawit": 0.92, "bawang-merah": 0.96, "minyak-goreng": 1.01 },
-    overrides: { "cabai-merah": 45000 },
-  },
 ];
 
-export const DEFAULT_CITY_KEY: CityKey = "lhokseumawe";
+export const DEFAULT_CITY_KEY: CityKey = "jakarta";
 
 export function getCityProfile(key: CityKey) {
-  return CITY_PROFILES.find((city) => city.key === key) ?? CITY_PROFILES[4];
+  return CITY_PROFILES.find((city) => city.key === key) ?? CITY_PROFILES[0];
 }
 
 export function applyCityProfile(items: StapleItem[], city: CityProfile): StapleItem[] {
