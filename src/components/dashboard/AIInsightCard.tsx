@@ -216,15 +216,18 @@ export function AIInsightCard() {
     return () => clearInterval(interval);
   }, [phase]);
 
-  const runAnalysis = (insight: RegionInsight) => {
+  const [activeQuery, setActiveQuery] = useState("");
+
+  const runAnalysis = (insight: RegionInsight, query: string) => {
     timeoutsRef.current.forEach(clearTimeout);
     timeoutsRef.current = [];
     setActiveInsight(insight);
+    setActiveQuery(query);
     setTyped("");
     setLoadingMsgIdx(0);
     setPhase("loading");
 
-    const response = buildResponse(insight);
+    const response = buildResponse(query);
     const t1 = setTimeout(() => {
       setPhase("typing");
       let i = 0;
@@ -245,17 +248,17 @@ export function AIInsightCard() {
 
   const handleGenerate = () => {
     if (phase === "loading" || phase === "typing") return;
-    runAnalysis(findRegion(location));
+    runAnalysis(findRegion(location), location);
   };
 
   const handleQuickRegion = (name: string) => {
     if (phase === "loading" || phase === "typing") return;
     setLocation(name);
-    runAnalysis(findRegion(name));
+    runAnalysis(findRegion(name), name);
   };
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(buildResponse(activeInsight));
+    await navigator.clipboard.writeText(buildResponse(activeQuery));
     setCopied(true);
     toast.success("Insight Rakan AI disalin ke clipboard");
     setTimeout(() => setCopied(false), 1800);
